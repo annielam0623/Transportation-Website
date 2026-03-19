@@ -48,17 +48,20 @@ export default function ServicesSection() {
           </div>
           <a href="#booking" className="btn-primary self-start">Inquire About Charter →</a>
         </div>
-        <div className="relative overflow-hidden min-h-[360px] md:min-h-0">
-          <Image src="/bus-interior.png" alt="Charter Bus Interior" fill className="object-cover" sizes="50vw" />
-          <div className="absolute inset-0" style={{background:'linear-gradient(to right, rgba(0,0,0,.55) 0%, transparent 45%)'}} />
+        <div style={{background:'#000'}} className="px-6 md:px-12 py-16 flex items-center">
+          <div className="relative w-full overflow-hidden" style={{aspectRatio:'16/10'}}>
+            <Image src="/bus-interior.png" alt="Charter Bus Interior" fill className="object-cover" sizes="50vw" />
+          <div className="absolute inset-0" style={{background:'linear-gradient(to right, rgba(0,0,0,.3) 0%, transparent 40%)'}} />
         </div>
+       </div>
       </div>
-
       {/* ROW 2 — Fly & Drive: car LEFT, text RIGHT */}
-      <div className="grid grid-cols-1 md:grid-cols-2 min-h-[500px] border-t border-white/5">
-        <div className="relative overflow-hidden min-h-[360px] md:min-h-0 order-2 md:order-1">
-          <Image src="/car.png" alt="Cadillac Escalade" fill className="object-cover" sizes="50vw" />
-          <div className="absolute inset-0" style={{background:'linear-gradient(to left, rgba(0,0,0,.55) 0%, transparent 50%)'}} />
+      <div className="grid grid-cols-1 md:grid-cols-2 border-t border-white/5">
+        <div style={{background:'#000'}} className="px-6 md:px-12 py-16 flex items-center order-2 md:order-1">
+          <div className="relative w-full overflow-hidden" style={{aspectRatio:'16/10'}}>
+           <Image src="/car.png" alt="Cadillac Escalade" fill className="object-cover" sizes="50vw" />
+           <div className="absolute inset-0" style={{background:'linear-gradient(to left, rgba(0,0,0,.3) 0%, transparent 40%)'}} />
+          </div>
         </div>
         <div style={{background:'#000'}} className="px-10 md:px-16 py-16 flex flex-col justify-center border-l border-white/5 order-1 md:order-2">
           <h3 className="font-serif text-5xl md:text-6xl font-bold leading-[1.05] mb-4">
