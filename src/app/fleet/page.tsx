@@ -37,7 +37,7 @@ export default async function FleetPage() {
 
       {/* Fleet grid */}
       <section className="bg-[#071020] px-6 md:px-20 py-16">
-        <FleetGrid vehicles={vehicles} />
+        <FleetGrid vehicles={vehicles as any} />
       </section>
 
       {/* CTA */}
