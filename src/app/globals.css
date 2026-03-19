@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #04080F;
+  --navy-2: #071020;
+  --navy-3: #0A1830;
+  --blue: #0A428C;
+  --blue-hover: #0D52AA;
+  --silver: #B8C4D4;
+  --gold: #B8C4D4;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-[#04080F] text-white font-sans; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#0A428C] text-white px-6 py-3 text-xs tracking-widest uppercase font-semibold
+           hover:bg-[#0D52AA] transition-colors duration-200 rounded-sm;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-white border border-white/30 px-6 py-3 text-xs tracking-widest
+           uppercase hover:border-[#B8C4D4] hover:text-[#B8C4D4] transition-colors duration-200 rounded-sm;
+  }
+  .section-label {
+    @apply flex items-center gap-3 text-[#B8C4D4] text-[0.65rem] tracking-[0.18em] uppercase mb-3;
+  }
+  .section-label::before {
+    content: '';
+    @apply block w-7 h-px bg-[#B8C4D4];
+  }
+  .input-dark {
+    @apply w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm
+           font-sans outline-none focus:border-[#0A428C] transition-colors rounded-sm;
+  }
+  .input-light {
+    @apply w-full bg-white border border-[#CBD5E0] text-[#1A2A3A] px-4 py-[0.65rem] text-sm
+           font-sans outline-none focus:border-[#0A428C] transition-colors rounded;
+  }
+  .label-light {
+    @apply block text-[0.68rem] text-[#5A6B82] tracking-widest uppercase mb-1.5;
+  }
+}

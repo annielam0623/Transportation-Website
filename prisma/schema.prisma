@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── CHARTER BUS ───────────────────────────────────────────
+
+model Vehicle {
+  id           String    @id @default(cuid())
+  name         String                        // "Mid-Size Coach 40 seats"
+  type         VehicleType
+  capacity     Int                           // passenger count
+  pricePerHour Decimal   @db.Decimal(10,2)
+  pricePerDay  Decimal?  @db.Decimal(10,2)
+  imageUrl     String?
+  description  String?
+  features     String[]                      // ["WiFi", "AC", "USB Charging"]
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+
+  bookings     Booking[]
+
+  @@map("vehicles")
+}
+
+enum VehicleType {
+  SPRINTER_10
+  MINIBUS_22
+  EXECUTIVE_SPRINTER_16
+  MIDSIZE_COACH_40
+  FULLSIZE_COACH_56
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  bookingRef    String        @unique @default(cuid())
+  type          BookingType
+  status        BookingStatus @default(PENDING)
+
+  // Customer info
+  customerName  String
+  customerEmail String
+  customerPhone String?
+
+  // Trip details
+  pickupLocation   String
+  dropoffLocation  String
+  pickupDate       DateTime
+  pickupTime       String
+  passengers       Int
+  luggage          Int       @default(0)
+  notes            String?
+
+  // Vehicle (charter only)
+  vehicleId     String?
+  vehicle       Vehicle?  @relation(fields: [vehicleId], references: [id])
+
+  // Pricing
+  quotedPrice   Decimal?  @db.Decimal(10,2)
+  finalPrice    Decimal?  @db.Decimal(10,2)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("bookings")
+}
+
+enum BookingType {
+  CHARTER_AIRPORT
+  CHARTER_INTOWN
+  CHARTER_PRIVATE
+  CHARTER_CORPORATE
+}
+
+enum BookingStatus {
+  PENDING
+  QUOTED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+// ─── FLY & DRIVE ───────────────────────────────────────────
+
+model FlyDriveQuote {
+  id            String          @id @default(cuid())
+  quoteRef      String          @unique @default(cuid())
+  status        QuoteStatus     @default(PENDING)
+
+  // Customer info
+  customerName  String
+  customerEmail String
+  customerPhone String?
+
+  // Trip details
+  origin        String
+  destination   String
+  departureDate DateTime
+  returnDate    DateTime?
+  tripDays      Int
+  travelers     Int
+  travelMode    TravelMode
+
+  // AI recommendation result
+  aiRecommended TravelMode?
+  aiReasoning   String?
+
+  // Pricing
+  quotedPrice   Decimal?  @db.Decimal(10,2)
+  notes         String?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("fly_drive_quotes")
+}
+
+enum TravelMode {
+  SELF_DRIVE
+  CHAUFFEUR
+  HYBRID
+  AI_RECOMMEND
+}
+
+enum QuoteStatus {
+  PENDING
+  QUOTED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
