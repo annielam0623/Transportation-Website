@@ -113,7 +113,7 @@ export default function HeroSection() {
               <button onClick={() => setSuccess(false)} className="mt-4 text-[#B8C4D4] text-sm underline">Submit another</button>
             </div>
           ) : (
-            <div className="border border-white/0 overflow-hidden">
+            <div className="border border-white/10 overflow-hidden">
               {/* Card header */}
               <div className="px-6 py-5 border-b border-white/10">
                 <div className="font-serif text-[20px] font-bold text-white mb-1">Start Booking or Quote</div>
