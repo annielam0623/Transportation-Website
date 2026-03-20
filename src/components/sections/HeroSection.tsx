@@ -22,15 +22,15 @@ export default function HeroSection() {
 
         {/* Sprinter fade from right */}
         <div style={{
-          position:'absolute',right:0,top:0,bottom:0,width:'65%',
-          WebkitMaskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.85) 60%, #000 80%)',
-          maskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 25%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.85) 65%, #000 80%)',
+          position:'absolute',right:0,top:0,bottom:0,width:'75%',
+          WebkitMaskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, #000 30%)',
+          maskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.8) 15%, #000 30%)',
           pointerEvents:'none',
         }}>
           <img
             src="/Sprinter-Hero.png"
             alt=""
-            style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center 40%',opacity:0.85,mixBlendMode:'normal'}}
+            style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center 40%',opacity:0.95,mixBlendMode:'normal'}}
           />
         </div>
 
