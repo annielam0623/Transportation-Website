@@ -15,7 +15,7 @@ const charterTypes = [
 
 export default function ServicesSection() {
   return (
-    <section id="services" style={{background:'#000'}}>
+    <section id="services" style={{background:'#020c18'}}>
 
       {/* Section header */}
       <div className="px-6 md:px-12 pt-16 pb-10">
@@ -29,8 +29,9 @@ export default function ServicesSection() {
       </div>
 
       {/* ROW 1 — Charter Bus: text LEFT, bus interior RIGHT */}
-      <div className="grid grid-cols-1 md:grid-cols-2 min-h-[500px] border-t border-white/5">
-        <div style={{background:'#000'}} className="px-10 md:px-16 py-16 flex flex-col justify-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 border-t border-white/5">
+        {/* Text left */}
+        <div style={{background:'#020c18'}} className="px-6 md:px-12 py-16 flex flex-col justify-center">
           <h3 className="font-serif text-5xl md:text-6xl font-bold leading-[1.05] mb-4">
             Charter<br />Bus
           </h3>
@@ -48,22 +49,26 @@ export default function ServicesSection() {
           </div>
           <a href="#booking" className="btn-primary self-start">Inquire About Charter →</a>
         </div>
-        <div style={{background:'#000'}} className="px-6 md:px-12 py-16 flex items-center">
-          <div className="relative w-full overflow-hidden" style={{aspectRatio:'16/10'}}>
+        {/* Image right — with same horizontal padding */}
+        <div style={{background:'#020c18'}} className="px-6 md:px-12 py-16 flex items-center">
+          <div className="relative w-full rounded-sm overflow-hidden" style={{aspectRatio:'16/10'}}>
             <Image src="/bus-interior.png" alt="Charter Bus Interior" fill className="object-cover" sizes="50vw" />
-          <div className="absolute inset-0" style={{background:'linear-gradient(to right, rgba(0,0,0,.3) 0%, transparent 40%)'}} />
-        </div>
-       </div>
-      </div>
-      {/* ROW 2 — Fly & Drive: car LEFT, text RIGHT */}
-      <div className="grid grid-cols-1 md:grid-cols-2 border-t border-white/5">
-        <div style={{background:'#000'}} className="px-6 md:px-12 py-16 flex items-center order-2 md:order-1">
-          <div className="relative w-full overflow-hidden" style={{aspectRatio:'16/10'}}>
-           <Image src="/car.png" alt="Cadillac Escalade" fill className="object-cover" sizes="50vw" />
-           <div className="absolute inset-0" style={{background:'linear-gradient(to left, rgba(0,0,0,.3) 0%, transparent 40%)'}} />
+            <div className="absolute inset-0" style={{background:'linear-gradient(to right, rgba(0,0,0,.3) 0%, transparent 40%)'}} />
           </div>
         </div>
-        <div style={{background:'#000'}} className="px-10 md:px-16 py-16 flex flex-col justify-center border-l border-white/5 order-1 md:order-2">
+      </div>
+
+      {/* ROW 2 — Fly & Drive: car LEFT, text RIGHT */}
+      <div className="grid grid-cols-1 md:grid-cols-2 border-t border-white/5">
+        {/* Image left — with same horizontal padding */}
+        <div style={{background:'#020c18'}} className="px-6 md:px-12 py-16 flex items-center order-2 md:order-1">
+          <div className="relative w-full rounded-sm overflow-hidden" style={{aspectRatio:'16/10'}}>
+            <Image src="/car.png" alt="Cadillac Escalade" fill className="object-cover" sizes="50vw" />
+            <div className="absolute inset-0" style={{background:'linear-gradient(to left, rgba(0,0,0,.3) 0%, transparent 40%)'}} />
+          </div>
+        </div>
+        {/* Text right */}
+        <div style={{background:'#020c18'}} className="px-6 md:px-12 py-16 flex flex-col justify-center border-l border-white/5 order-1 md:order-2">
           <h3 className="font-serif text-5xl md:text-6xl font-bold leading-[1.05] mb-4">
             Fly &amp;<br />Drive
           </h3>
@@ -111,7 +116,7 @@ export default function ServicesSection() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 border-t border-white/5">
           {charterTypes.map(c => (
-            <div key={c.title} style={{background:'#000'}} className="p-10 border-r border-white/5 last:border-r-0 hover:bg-[#080e1a] transition-colors">
+            <div key={c.title} style={{background:'#020c18'}} className="p-10 border-r border-white/5 last:border-r-0 hover:bg-[#080e1a] transition-colors">
               <div className="w-11 h-11 border border-white/10 flex items-center justify-center text-xl mb-5">{c.icon}</div>
               <div className="font-semibold text-base mb-3">{c.title}</div>
               <p className="text-white/45 text-sm font-light leading-relaxed">{c.desc}</p>

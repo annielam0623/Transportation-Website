@@ -8,7 +8,7 @@ const items = [
 ]
 export default function WhyUsSection() {
   return (
-    <section className="bg-[#04080F] px-6 md:px-16 py-20">
+    <section className="bg-[#020c18] px-6 md:px-16 py-20">
       <div className="max-w-5xl mx-auto text-center mb-14">
         <div className="flex items-center justify-center gap-3 text-[#B8C4D4] text-[0.65rem] tracking-[0.18em] uppercase mb-3">
           <span className="block w-7 h-px bg-[#B8C4D4]" /> Why Travel USA Express <span className="block w-7 h-px bg-[#B8C4D4]" />
@@ -19,7 +19,7 @@ export default function WhyUsSection() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 max-w-5xl mx-auto">
         {items.map(item => (
-          <div key={item.title} className="bg-[#0D1E38] p-8 hover:bg-[#112244] transition-colors">
+          <div key={item.title} className="bg-[#06111F] p-8 hover:bg-[#081830] transition-colors">
             <div className="w-10 h-10 border border-[#B8C4D4]/20 flex items-center justify-center text-lg mb-4">{item.icon}</div>
             <div className="font-semibold text-sm mb-2">{item.title}</div>
             <p className="text-white/50 text-[0.82rem] font-light leading-relaxed">{item.desc}</p>

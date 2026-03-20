@@ -1,5 +1,4 @@
 'use client'
-// src/components/layout/Navbar.tsx
 import Link from 'next/link'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
@@ -8,9 +7,9 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   return (
     <>
-      <nav className="h-[68px] px-12 flex items-center justify-between relative z-10 bg-transparent">
+      <nav style={{background:'#020c18'}} className="h-[68px] px-12 flex items-center justify-between relative z-10">
         <Link href="/" className="font-serif text-xl text-white whitespace-nowrap">
-          Travel USA <span className="text-[#B8C4D4]">Express</span>
+          Travel USA <span className="text-[#9AA8B8]">Express</span>
         </Link>
         <div className="hidden md:flex items-center gap-1">
           {[
@@ -28,7 +27,7 @@ export default function Navbar() {
           ))}
         </div>
         <Link href="/booking"
-          className="hidden md:block bg-[#0A428C] text-white text-[11px] tracking-[.12em] uppercase font-semibold px-5 py-[10px] hover:bg-[#0D52AA] transition-colors">
+          className="hidden md:block bg-[#9AA8B8] text-[#020c18] text-[11px] tracking-[.12em] uppercase font-bold px-5 py-[10px] hover:bg-[#B8C4D4] transition-colors">
           Reserve Now
         </Link>
         <button className="md:hidden text-white" onClick={() => setOpen(!open)}>
@@ -36,7 +35,7 @@ export default function Navbar() {
         </button>
       </nav>
       {open && (
-        <div className="md:hidden bg-black/95 flex flex-col py-4 px-6 gap-1 z-40">
+        <div style={{background:'#020c18'}} className="md:hidden flex flex-col py-4 px-6 gap-1 z-40">
           {['Home','Charter Bus','Fly & Drive','Fleet','Book Now'].map(l => (
             <span key={l} className="text-white/70 text-sm py-3 border-b border-white/5">{l}</span>
           ))}
