@@ -24,13 +24,13 @@ export default function HeroSection() {
         <div style={{
           position:'absolute',right:0,top:0,bottom:0,width:'65%',
           WebkitMaskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.85) 60%, #000 80%)',
-          maskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.85) 60%, #000 80%)',
+          maskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 25%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.85) 65%, #000 80%)',
           pointerEvents:'none',
         }}>
           <img
             src="/Sprinter-Hero.png"
             alt=""
-            style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center 40%',opacity:0.55,mixBlendMode:'luminosity'}}
+            style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center 40%',opacity:0.85,mixBlendMode:'normal'}}
           />
         </div>
 
