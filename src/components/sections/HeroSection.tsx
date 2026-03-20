@@ -28,7 +28,7 @@ export default function HeroSection() {
           pointerEvents:'none',
         }}>
           <img
-            src="/sprinter-Hero.png"
+            src="/Sprinter-Hero.png"
             alt=""
             style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center 40%',opacity:0.55,mixBlendMode:'luminosity'}}
           />
