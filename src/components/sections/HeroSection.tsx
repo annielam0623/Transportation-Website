@@ -15,7 +15,7 @@ export default function HeroSection() {
           overflow: "hidden",
           minHeight: "clamp(480px, 90vh, 960px)",
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
         }}
       >
         {/* Subtle glow */}
@@ -102,8 +102,8 @@ export default function HeroSection() {
             width: "100%",
             paddingLeft: "clamp(1.5rem, 6vw, 6rem)",
             paddingRight: "clamp(1.5rem, 6vw, 6rem)",
-            paddingTop: "clamp(3rem, 5vw, 5rem)",
-            paddingBottom: "clamp(3rem, 5vw, 5rem)",
+            paddingTop: "clamp(3rem, 10vw, 5rem)",
+            paddingBottom: "clamp(3rem, 8vw, 5rem)",
           }}
         >
           <div style={{ maxWidth: "clamp(320px, 30vw, 480px)" }}>

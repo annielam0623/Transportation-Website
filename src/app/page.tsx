@@ -8,13 +8,13 @@ import Footer from '@/components/layout/Footer'
 
 export default function Home() {
   return (
-    <>
+    <div className="px-[15%]">
       <HeroSection />
-      <BookingSection />   
-      <ServicesSection />
+      <ServicesSection /> 
+      <BookingSection />
       <WhyUsSection />
       <TestimonialsSection />
       <Footer />
-    </>
+    </div>
   )
 }

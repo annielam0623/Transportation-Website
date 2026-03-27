@@ -96,10 +96,10 @@ export default function BookingSection() {
     <section
       id="booking"
       style={{ background: "#020c18" }}
-      className="py-20 px-6 md:px-16 lg:px-24"
+      className="py-20 px-6 md:px-16 lg:px-32"
     >
       {/* Header */}
-      <div className="max-w-[1000px] mx-auto mb-10">
+      <div className="max-w-[1600px]  mb-10 text-center">
         <div className="flex items-center gap-3 text-[10px] tracking-[.18em] uppercase text-[#9AA8B8] mb-4">
           <span className="block w-7 h-px bg-[#9AA8B8]" />
           Book Now
@@ -113,7 +113,7 @@ export default function BookingSection() {
       </div>
 
       {/* Card */}
-      <div className="max-w-[1000px] mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {success ? (
           <div className="p-8 text-center border-b border-white/10">
             <div className="text-3xl mb-3">✓</div>
