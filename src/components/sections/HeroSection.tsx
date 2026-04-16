@@ -128,7 +128,7 @@ export default function HeroSection() {
                   background: "#9AA8B8",
                 }}
               />
-              Charter Bus &amp; Fly &amp; Drive
+              Charter Bus &amp; Self-Drive
               <span
                 style={{
                   display: "block",
@@ -166,7 +166,7 @@ export default function HeroSection() {
                 maxWidth: "clamp(260px, 32vw, 420px)",
               }}
             >
-              Group charter buses for tours and transfers. AI-powered Fly &amp;
+              Group charter buses for tours and transfers. AI-powered;
               Drive decisions — choose self-drive, professional chauffeur, or
               the smart hybrid of both.
             </p>
