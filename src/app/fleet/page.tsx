@@ -1,7 +1,7 @@
 // src/app/fleet/page.tsx
 import { prisma } from '@/lib/prisma'
-import Navbar from '@/components/layout/Navbar'
-import FleetGrid from '@/components/fleet/FleetGrid'
+import Navbar from '@/components/layout/navbar'
+import FleetGrid from '@/components/fleet/fleetGrid'
 
 export const revalidate = 60 // revalidate every 60s
 

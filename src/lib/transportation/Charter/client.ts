@@ -1,33 +1,27 @@
-export type CharterQuoteRequest = {
-  serviceType: string;
-  tripType?: "one_way" | "round_trip";
-  pickup: string;
-  dropoff: string;
-  date: string;
-  passengers: number;
-  hours?: number;
-  vehicleType?: string;
-  notes?: string;
-};
+import { QuoteResult } from "./types";
 
-export type CharterVehicleQuote = {
-  vehicleType: string;
-  pricingMode: string;
-  estimatedTotal: number;
-  currency: string;
-  remarks?: string[];
+export type CharterQuoteRequest = {
+  serviceType: "charter_bus" | "black_car";
+  pickupLocation: string;
+  dropoffLocation: string;
+  tripDate: string;
+  pickupTime: string;
+  airportType?: "domestic" | "international";
+  passengerCount?: number;
+  luggageCount?: number;
+  estimatedServiceHours?: number;
 };
 
 export type CharterQuoteResponse = {
   success: boolean;
-  quotes?: CharterVehicleQuote[];
+  quote?: QuoteResult;
   error?: string;
 };
 
 export async function getCharterQuote(
   payload: CharterQuoteRequest
 ): Promise<CharterQuoteResponse> {
-  const res = await fetch("/api/transportation/charter/quote", {
+  const res = await fetch("/api/transportation/charter/estimate", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

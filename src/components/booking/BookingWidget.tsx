@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import CharterForm from './CharterForm'
-import SelfDriveForm from './SelfDriveForm'
+import CharterForm from './charterForm'
+import SelfDriveForm from './selfDriveForm'
 
 export default function BookingWidget() {
   const [tab, setTab] = useState<'charter' | 'selfdrive'>('charter')

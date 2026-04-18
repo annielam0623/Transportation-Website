@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { getCharterQuote, type CharterQuoteResponse } from "@/lib/transportation/charter/client"
-import CharterQuoteResult from "./CharterQuoteResult"
+import CharterQuoteResult from "./charterQuoteResult"
 
 export default function CharterForm() {
   const [pax, setPax] = useState(1)
@@ -11,45 +11,49 @@ export default function CharterForm() {
   const [error, setError] = useState("")
   const [response, setResponse] = useState<CharterQuoteResponse | null>(null)
 
-  const [form, setForm] = useState({
-    pickupLocation: '',
-    dropoffLocation: '',
-    pickupDate: '',
-    pickupTime: '',
-    customerName: '',
-    customerEmail: '',
-    customerPhone: '',
-    notes: '',
-    type: 'CHARTER_AIRPORT',
-  })
+const [form, setForm] = useState({
+  pickupLocation: '',
+  dropoffLocation: '',
+  pickupDate: '',
+  pickupTime: '',
+  airportTransferType: 'domestic',
+  customerName: '',
+  customerEmail: '',
+  customerPhone: '',
+  notes: '',
+})
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
+ async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault()
 
-    try {
-      const data = await getCharterQuote({
-        serviceType: form.type,
-        pickup: form.pickupLocation,
-        dropoff: form.dropoffLocation,
-        date: form.pickupDate,
-        passengers: pax,
-      })
+  setLoading(true)
+  setError("")
 
-      if (!data.success) {
-        throw new Error(data.error || "Quote failed")
-      }
+  try {
+    const data = await getCharterQuote({
+      serviceType: "charter_bus",
+      pickupLocation: form.pickupLocation,
+      dropoffLocation: form.dropoffLocation,
+      tripDate: form.pickupDate,
+      pickupTime: form.pickupTime,
+      passengerCount: pax,
+      luggageCount: lug,
+      airportType: form.airportTransferType as "domestic" | "international",
+    })
 
-      setResponse(data)
-    } catch (err: any) {
-      setError(err.message || "Something went wrong")
-    } finally {
-      setLoading(false)
+    if (!data.success) {
+      throw new Error(data.error || "Quote failed")
     }
+
+    setResponse(data)
+  } catch (err: any) {
+    setError(err.message || "Something went wrong")
+  } finally {
+    setLoading(false)
   }
+}
 
   return (
     <div>
@@ -57,6 +61,17 @@ export default function CharterForm() {
         <p className="text-[#7A8A9A] text-xs mb-5">
           Instant quotation for charter bus bookings — airport transfers, group tours, corporate events.
         </p>
+        <div>
+  <label className="label-light">Airport Transfer Type</label>
+  <select
+    className="input-light"
+    value={form.airportTransferType}
+    onChange={e => set("airportTransferType", e.target.value)}
+  >
+    <option value="domestic">Domestic Arr / Outbound</option>
+    <option value="international">International Arr</option>
+  </select>
+</div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
@@ -189,12 +204,9 @@ export default function CharterForm() {
         </div>
       </form>
 
-      {response?.success && response.quotes?.length ? (
-  <div className="mt-8 space-y-4">
-    {response.quotes.map((quote) => (
-      <CharterQuoteResult key={quote.vehicleType} result={quote} />
-    ))}
+{response?.success && response.quote ? (
+  <div className="mt-8">
+    <CharterQuoteResult result={response.quote} />
   </div>
-) : null
-}  
+) : null}
   </div>)}

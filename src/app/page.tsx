@@ -4,7 +4,7 @@ import BookingSection from '@/components/sections/BookingSection'
 import ServicesSection from '@/components/sections/ServicesSection'
 import WhyUsSection from '@/components/sections/WhyUsSection'
 import TestimonialsSection from '@/components/sections/TestimonialsSection'
-import Footer from '@/components/layout/Footer'
+import Footer from '@/components/layout/footer'
 
 export default function Home() {
   return (
