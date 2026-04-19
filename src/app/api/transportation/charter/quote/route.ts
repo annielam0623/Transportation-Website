@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateCharterQuote } from "@/lib/charter/quote";
+import { generateCharterQuote } from "@/lib/transportation/charter/quote";
 
 export async function POST(req: NextRequest) {
   try {

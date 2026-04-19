@@ -1,0 +1,95 @@
+import { VehicleType } from "./types";
+
+export type Vehicle = {
+  type: VehicleType;
+  name: string;
+  maxPassengers: number;
+  maxLuggage: number;
+  tier: number;
+};
+
+// ── Charter Bus Fleet ─────────────────────────────────────────────
+export const CHARTER_BUS_VEHICLES: Vehicle[] = [
+  {
+  type: "mini_van",
+  name: "Mini Van",
+  maxPassengers: 6,
+  maxLuggage: 4,
+  tier: 1,
+  },
+  {
+    type: "sprinter",
+    name: "Sprinter",
+    maxPassengers: 10,
+    maxLuggage: 8,
+    tier: 1,
+  },
+  {
+    type: "executive",
+    name: "Executive Sprinter",
+    maxPassengers: 16,
+    maxLuggage: 10,
+    tier: 2,
+  },
+  {
+    type: "mini_bus",
+    name: "Mini Bus",
+    maxPassengers: 22,
+    maxLuggage: 18,
+    tier: 3,
+  },
+  {
+    type: "mid_size_motorcoach",
+    name: "Mid-Size Coach",
+    maxPassengers: 40,
+    maxLuggage: 30,
+    tier: 4,
+  },
+  {
+    type: "full_size_motorcoach",
+    name: "Full-Size Coach",
+    maxPassengers: 56,
+    maxLuggage: 50,
+    tier: 5,
+  },
+];
+
+// ── Black Car Fleet ───────────────────────────────────────────────
+export const BLACK_CAR_VEHICLES: Vehicle[] = [
+  {
+    type: "suv",
+    name: "Luxury SUV",
+    maxPassengers: 6,
+    maxLuggage: 4,
+    tier: 1,
+  },
+  {
+    type: "limo",
+    name: "Limousine",
+    maxPassengers: 8,
+    maxLuggage: 3,
+    tier: 2,
+  },
+];
+
+// ── Vehicle Selection Logic ───────────────────────────────────────
+// Returns [matched vehicle, recommended vehicle (+1 tier)]
+export function selectVehicles(
+  vehicles: Vehicle[],
+  passengers: number,
+  luggage: number
+): { match: Vehicle | null; recommended: Vehicle | null } {
+  // Find minimum vehicle that fits both pax and luggage
+  const matchIndex = vehicles.findIndex(
+    (v) => v.maxPassengers >= passengers && v.maxLuggage >= luggage
+  );
+
+  if (matchIndex === -1) {
+    return { match: null, recommended: null };
+  }
+
+  const match = vehicles[matchIndex];
+  const recommended = vehicles[matchIndex + 1] ?? null;
+
+  return { match, recommended };
+}
