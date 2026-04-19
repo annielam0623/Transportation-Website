@@ -1,6 +1,6 @@
 "use client";
-import CharterForm from "@/components/transportation/booking/CharterForm";
-import SelfDriveForm from "@/components/transportation/booking/SelfDriveForm";
+import CharterForm from "@/components/transportation/booking/charter/CharterForm";
+import SelfDriveForm from "@/components/transportation/booking/self-drive/SelfDriveForm";
 import { useState } from "react";
 
 type Tab = "charter" | "hiredriver" | "selfdrive";
