@@ -1,94 +1,139 @@
 # Travel USA Express
 
-Next.js 14 + PostgreSQL + Prisma + Tailwind CSS + Vercel
+Charter Bus and ground transportation platform for the US Southwest market.
+
+**Live:** https://transportation-website-1qdl.vercel.app/  
+**Branch:** `charter` (active development)
+
+---
 
 ## Tech Stack
-- **Frontend**: Next.js 14 (App Router), React, Tailwind CSS
-- **Database**: PostgreSQL + Prisma ORM
-- **Deployment**: Vercel + Neon (serverless Postgres) or Supabase
 
-## Getting Started
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS
+- **Database:** Prisma + PostgreSQL
+- **Deployment:** Vercel
+- **Node:** v20
+- **Package flags:** `legacy-peer-deps=true`
 
-### 1. Install dependencies
-```bash
-npm install
-```
+---
 
-### 2. Set up environment variables
-```bash
-cp .env.example .env.local
-# Edit .env.local with your DATABASE_URL
-```
+## Services
 
-### 3. Set up database
-```bash
-# Push schema to your database
-npm run db:push
+| Service | Status |
+|---|---|
+| Charter Bus | ✅ Active |
+| Hire Driver | 🚧 In Progress |
+| Self-Drive | 🚧 Placeholder |
 
-# Seed initial vehicle data
-npm run db:seed
-
-# (Optional) Open Prisma Studio to view data
-npm run db:studio
-```
-
-### 4. Run development server
-```bash
-npm run dev
-# Open http://localhost:3000
-```
+---
 
 ## Project Structure
-```
 src/
 ├── app/
-│   ├── api/
-│   │   ├── bookings/route.ts   # POST/GET charter bookings
-│   │   ├── quotes/route.ts     # POST/GET fly & drive quotes
-│   │   └── vehicles/route.ts   # GET vehicle list
-│   ├── layout.tsx
-│   ├── page.tsx                # Home page
-│   └── globals.css
+│   ├── api/transportation/charter/estimate/
+│   └── page.tsx
 ├── components/
-│   ├── booking/
-│   │   ├── BookingWidget.tsx   # Tab switcher
-│   │   ├── CharterForm.tsx     # Charter bus form
-│   │   └── FlyDriveForm.tsx    # Fly & Drive form
 │   ├── layout/
-│   │   ├── Topbar.tsx
-│   │   ├── Navbar.tsx
+│   ├── sections/
+│   │   ├── HeroSection.tsx
+│   │   ├── BookingSection.tsx
+│   │   ├── ServicesSection.tsx
+│   │   ├── WhyUsSection.tsx
+│   │   ├── TestimonialsSection.tsx
 │   │   └── Footer.tsx
-│   └── sections/
-│       ├── HeroSection.tsx
-│       ├── StatsBar.tsx
-│       ├── ServicesSection.tsx
-│       ├── WhyUsSection.tsx
-│       └── TestimonialsSection.tsx
-├── lib/
-│   └── prisma.ts               # Prisma client singleton
-└── types/
-    └── index.ts
-prisma/
-├── schema.prisma               # DB schema
-└── seed.ts                     # Seed data (5 vehicles)
+│   └── transportation/
+│       ├── booking/
+│       │   ├── BookingWidget.tsx
+│       │   ├── charter/
+│       │   │   ├── CharterForm.tsx
+│       │   │   └── CharterQuoteResult.tsx
+│       │   ├── hire-driver/
+│       │   │   └── HireDriverForm.tsx
+│       │   └── self-drive/
+│       │       └── SelfDriveForm.tsx
+│       └── ui/
+│           └── LocationInput.tsx
+└── lib/
+└── transportation/
+└── cities/
+├── index.ts
+└── las-vegas/
+├── index.ts
+├── airports.ts
+├── locations.ts
+├── zones.ts
+├── search.ts
+└── pricing.ts
+
+---
+
+## City Architecture
+
+Designed for multi-city expansion. Each city implements a standard interface:
+
+```typescript
+interface CityModule {
+  key: string
+  label: string
+  active: boolean
+  airports: Airport[]
+  search: (query: string) => SearchResult[]
+  getZone: (locationName: string) => LocationZone
+  pricing: CityPricing
+}
 ```
 
-## Database Models
-- **Vehicle** — charter bus fleet (type, capacity, pricing, features)
-- **Booking** — charter bus bookings (pickup, dropoff, date, passengers)
-- **FlyDriveQuote** — fly & drive quotes with AI recommendation
+To add a new city:
+1. Create `cities/{city-name}/` folder with the standard files
+2. Register in `cities/index.ts` with `active: true`
 
-## API Endpoints
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | /api/bookings | Create charter booking |
-| GET | /api/bookings | List all bookings |
-| POST | /api/quotes | Create Fly & Drive quote + AI recommendation |
-| GET | /api/quotes | List all quotes |
-| GET | /api/vehicles | List active vehicles |
+**Currently active:** Las Vegas  
+**Coming soon:** Los Angeles, San Francisco, Phoenix
 
-## Deploying to Vercel
-1. Push code to GitHub
-2. Import project on vercel.com
-3. Add DATABASE_URL environment variable (use Neon or Supabase for serverless Postgres)
-4. Deploy — Vercel auto-detects Next.js
+---
+
+## Las Vegas Pricing Zones
+
+| Zone | Rate |
+|---|---|
+| Strip (32 hotels) | Standard |
+| Downtown | Standard |
+| Off-Strip | + Surcharge |
+| Henderson | + Surcharge |
+
+---
+
+## Airport Coverage (17 airports)
+
+| Region | Airports |
+|---|---|
+| Las Vegas | LAS, HND |
+| Los Angeles & San Diego | LAX, BUR, LGB, SNA, ONT, VNY, SAN, CLD |
+| San Francisco Bay Area | SFO, OAK, SJC |
+| Phoenix / Arizona | PHX, SDL, FLG, PGA |
+
+---
+
+## Design System
+
+- **Theme:** Deep navy / black
+- **Primary:** `#0A1E38` (Navy), `#0A428C` (Blue)
+- **Silver:** `#E8ECF2`, `#C8D0DA`, `#A8B4C2`
+- **Fonts:** Playfair Display (headings), Inter (body) via Google Fonts CDN
+
+---
+
+## Local Development
+
+```bash
+npm install --legacy-peer-deps
+npm run dev
+```
+
+## Deployment
+
+Vercel install command:
+```bash
+npm install --legacy-peer-deps
+```
