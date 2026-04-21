@@ -78,22 +78,38 @@ export function selectVehicles(
   vehicles: Vehicle[],
   passengers: number,
   luggage: number
-): { match: Vehicle | null; recommended: Vehicle | null } {
+): { match: Vehicle | null; recommended: Vehicle | null; extra: Vehicle | null } {
+  // 超过54人，需要两辆车
+  if (passengers > 54) {
+    const n = passengers - 54;
+    const fullSize = vehicles.find((v) => v.type === "full_size_motorcoach") ?? null;
+    
+    if (n < 10) {
+      // 加 Sprinter
+      const sprinter = vehicles.find((v) => v.type === "sprinter") ?? null;
+      return { match: fullSize, recommended: sprinter, extra: null };
+    } else {
+      // 加 Mid-Size 或 Full-Size
+      const midSize = vehicles.find((v) => v.type === "mid_size_motorcoach") ?? null;
+      const fullSize2 = vehicles.find((v) => v.type === "full_size_motorcoach") ?? null;
+      return { match: fullSize, recommended: midSize ?? fullSize2, extra: null };
+    }
+  }
+
+  // 正常单车逻辑
   const matchIndex = vehicles.findIndex(
     (v) => v.maxPassengers >= passengers && v.maxLuggage >= luggage
   );
 
   if (matchIndex === -1) {
-    return { match: null, recommended: null };
+    return { match: null, recommended: null, extra: null };
   }
 
   const match = vehicles[matchIndex];
-
-  // recommended = 能装下 passengers+5 的最小车型（排除 match 本身）
   const recommended =
     vehicles.find(
       (v) => v.type !== match.type && v.maxPassengers >= passengers + 5
     ) ?? null;
 
-  return { match, recommended };
+  return { match, recommended, extra: null };
 }

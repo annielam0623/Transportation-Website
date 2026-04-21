@@ -27,7 +27,7 @@ export function generateLasVegasQuote(input: CharterQuoteInput): QuoteResult {
     input.serviceType === "limousine_service";
 
   const fleet = isBlackCar ? BLACK_CAR_VEHICLES : CHARTER_BUS_VEHICLES;
-  const { match, recommended } = selectVehicles(
+  const { match, recommended, extra } = selectVehicles(
     fleet,
     input.passengerCount ?? 1,
     input.luggageCount ?? 0
@@ -37,7 +37,7 @@ export function generateLasVegasQuote(input: CharterQuoteInput): QuoteResult {
     return { ...classification, vehicles: [] };
   }
 
-  const candidates = [match, recommended].filter(Boolean) as typeof CHARTER_BUS_VEHICLES;
+  const candidates = [match, recommended, extra].filter(Boolean) as typeof CHARTER_BUS_VEHICLES;
 
   // ── Airport One-Way ───────────────────────────────────────────
   if (classification.priceCategory === "airport_one_way") {

@@ -355,22 +355,25 @@ console.log("serviceType:", serviceType);
             Luggage
           </p>
           <div className="flex items-center gap-3 border-b border-white/20 py-1.5">
-            <button
-              onClick={() => setLuggage((v) => Math.max(0, v - 1))}
-              className="text-white/40 hover:text-white transition-colors text-base leading-none"
-            >
-              −
-            </button>
-            <span className="text-sm text-white w-4 text-center">
-              {luggage}
-            </span>
-            <button
-              onClick={() => setLuggage((v) => Math.min(20, v + 1))}
-              className="text-white/40 hover:text-white transition-colors text-base leading-none"
-            >
-              +
-            </button>
-          </div>
+  <button
+    onClick={() => setLuggage((v) => Math.max(0, v - 1))}
+    className="text-white/40 hover:text-white transition-colors text-base leading-none"
+  >−</button>
+  <input
+    type="number"
+    min={0}
+    max={20}
+    value={luggage}
+    onChange={(e) => setLuggage(Math.min(20, Math.max(0, parseInt(e.target.value) || 0)))}
+    className="w-8 text-center text-sm text-white bg-transparent outline-none 
+               [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+               [&::-webkit-inner-spin-button]:appearance-none"
+  />
+  <button
+    onClick={() => setLuggage((v) => Math.min(20, v + 1))}
+    className="text-white/40 hover:text-white transition-colors text-base leading-none"
+  >+</button>
+</div>
         </div>
 
         {/* Pax */}
@@ -379,20 +382,25 @@ console.log("serviceType:", serviceType);
             Pax
           </p>
           <div className="flex items-center gap-3 border-b border-white/20 py-1.5">
-            <button
-              onClick={() => setPax((v) => Math.max(1, v - 1))}
-              className="text-white/40 hover:text-white transition-colors text-base leading-none"
-            >
-              −
-            </button>
-            <span className="text-sm text-white w-4 text-center">{pax}</span>
-            <button
-              onClick={() => setPax((v) => Math.min(100, v + 1))}
-              className="text-white/40 hover:text-white transition-colors text-base leading-none"
-            >
-              +
-            </button>
-          </div>
+  <button
+    onClick={() => setPax((v) => Math.max(1, v - 1))}
+    className="text-white/40 hover:text-white transition-colors text-base leading-none"
+  >−</button>
+  <input
+    type="number"
+    min={0}
+    max={200}
+    value={pax}
+    onChange={(e) => setPax(Math.min(100, Math.max(1, parseInt(e.target.value) || 0)))}
+    className="w-8 text-center text-sm text-white bg-transparent outline-none 
+               [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+               [&::-webkit-inner-spin-button]:appearance-none"
+  />
+  <button
+    onClick={() => setPax((v) => Math.min(100, v + 1))}
+    className="text-white/40 hover:text-white transition-colors text-base leading-none"
+  >+</button>
+</div>
         </div>
 
         {/* Submit */}

@@ -119,13 +119,18 @@ export default function CharterQuoteResult({
   return (
     <div className="w-full">
       {/* Header */}
-      <p className="text-[10px] tracking-widest text-white/40 uppercase mb-6">
+       <p className="text-[10px] tracking-widest text-white/40 uppercase mb-6">
         Available Vehicles — {SERVICE_LABEL[serviceType]} · {pax} Pax · {luggage} Luggage
+        {pax > 54 && (
+          <span className="ml-3 text-[9px] border border-white/20 text-white/40 px-2 py-0.5">
+            2 Vehicles Required
+          </span>
+        )}
       </p>
 
       {/* Vehicle Cards */}
       <div className="grid grid-cols-2 gap-4">
-        {vehicles.map((v) => (
+        {vehicles.map((v, index) => (
           <div
             key={v.type}
             className={`relative border p-6 transition-colors duration-200
@@ -134,14 +139,24 @@ export default function CharterQuoteResult({
                 : "border-white/10 bg-transparent"
               }`}
           >
-            {v.isRecommended && (
+          {/* Bus 1 / Bus 2 标签 */}
+            {pax > 54 && (
+              <span className="absolute top-4 left-4 text-[9px] tracking-widest
+                               uppercase border border-white/20 text-white/50 px-2 py-1">
+                Bus {index + 1}
+              </span>
+            )}
+
+            {v.isRecommended && pax <= 54 && (
               <span className="absolute top-4 right-4 text-[9px] tracking-widest
                                uppercase border border-white/20 text-white/50 px-2 py-1">
                 Recommended
               </span>
             )}
 
-            <p className="text-lg font-medium text-white mb-1">{v.name}</p>
+            <p className={`text-lg font-medium text-white mb-1 ${pax > 54 ? "mt-6" : ""}`}>
+              {v.name}
+            </p>
             <p className="text-xs text-white/40 mb-5">
               Up to {v.maxPassengers} pax · {v.maxLuggage} luggage
             </p>
