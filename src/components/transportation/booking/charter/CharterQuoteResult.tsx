@@ -16,7 +16,8 @@ interface Props {
   pax: number;
   luggage: number;
   city: typeof LasVegas;
-  date: string; 
+  date: string;
+  airportType: "domestic" | "international";
 }
 
 const SERVICE_TYPE_MAP: Record<string, ServiceType> = {
@@ -49,6 +50,7 @@ const SERVICE_LABEL: Record<string, string> = {
 
 export default function CharterQuoteResult({
   serviceType,
+  airportType,
   pickup,
   pickupResult,
   dropoff,
@@ -69,22 +71,16 @@ export default function CharterQuoteResult({
       try {
         const mappedServiceType = SERVICE_TYPE_MAP[serviceType] ?? "in_town_transfer";
 
-        // 判断 international（HND 视为 international）
-        const airportCode = serviceType === "airport_pickup"
-          ? pickupResult?.code
-          : dropoffResult?.code;
-        const airportType = airportCode === "HND" ? "international" : "domestic";
-
         const data = await getCharterQuote({
-  serviceType: mappedServiceType,
-  pickupLocation: pickup,
-  dropoffLocation: dropoff,
-  tripDate: date ? new Date(date).toISOString().split("T")[0] : "",
-  pickupTime: "",
-  passengerCount: pax,
-  luggageCount: luggage,
-  airportType,
-  cityKey: "las-vegas", 
+          serviceType: mappedServiceType,
+          pickupLocation: pickup,
+          dropoffLocation: dropoff,
+          tripDate: date ? new Date(date).toISOString().split("T")[0] : "",
+          pickupTime: "",
+          passengerCount: pax,
+          luggageCount: luggage,
+          airportType,  
+          cityKey: "las-vegas",
 } as any);
 
         if (!data.success || !data.quote) {

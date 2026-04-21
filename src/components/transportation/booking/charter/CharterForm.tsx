@@ -8,11 +8,8 @@ import {
   getActiveCity,
   CityKey,
 } from "@/lib/transportation/cities";
-import {
-  LasVegas,
-  SearchResult,
-  ServiceType,
-} from "@/lib/transportation/cities/las-vegas";
+import { LasVegas, SearchResult } from "@/lib/transportation/cities/las-vegas";
+import { ServiceType } from "@/lib/transportation/charter/types";
 import LocationInput from "@/components/transportation/ui/LocationInput";
 import CharterQuoteResult from "./CharterQuoteResult";
 
@@ -30,9 +27,9 @@ const SERVICE_TYPES: { value: ServiceType; label: string; group: string }[] = [
 
 export default function CharterForm() {
   const allCities = getAllCities();
-
+  const [airportType, setAirportType] = useState<"domestic" | "international">("domestic");
   const [cityKey, setCityKey] = useState<CityKey>("las-vegas");
-  const [serviceType, setServiceType] = useState<ServiceType>("airport-pickup");
+  const [serviceType, setServiceType] = useState<ServiceType>("airport_pickup");
   const [pickup, setPickup] = useState("");
   const [pickupResult, setPickupResult] = useState<SearchResult | undefined>();
   const [dropoff, setDropoff] = useState("");
@@ -132,11 +129,20 @@ export default function CharterForm() {
     }
     return "";
   }
-
+console.log("serviceType:", serviceType);
   return (
     <div className="w-full pt-8">
-      {/* Row 1: City / Service Type / Pickup / Dropoff */}
-      <div className="grid grid-cols-4  pb-8 gap-0">
+      {/* Row 1: City / Service Type /Airport Type / pick up / dropoff */}
+      <div
+  style={{
+    display: "grid",
+    gridTemplateColumns:
+      serviceType === "airport_pickup" || serviceType === "airport_dropoff"
+        ? "repeat(5, 1fr)"
+        : "repeat(4, 1fr)",
+  }}
+  className="border-b border-white/10 pb-8 gap-0"
+>
         {/* City */}
         <div className="pr-10 border-r border-white/10">
           <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">
@@ -163,7 +169,7 @@ export default function CharterForm() {
         </div>
 
         {/* Service Type */}
-       <div className="px-10 border-r border-white/10">
+         <div className="px-10 border-r border-white/10">
   <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">Service Type</p>
   <select
     value={serviceType}
@@ -183,9 +189,24 @@ export default function CharterForm() {
   </select>
 </div>
 
+  {/* Airport Type — 条件显示 */}
+  {(serviceType === "airport_pickup" || serviceType === "airport_dropoff") && (
+    <div className="px-10 border-r border-white/10">
+      <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">Flight Type</p>
+      <select
+        value={airportType}
+        onChange={(e) => setAirportType(e.target.value as "domestic" | "international")}
+        className="w-full bg-transparent text-sm text-white outline-none cursor-pointer
+                   border-b border-white/20 py-1.5 appearance-none"
+      >
+        <option value="domestic" className="bg-[#0A1E38]">Domestic / Outbound</option>
+        <option value="international" className="bg-[#0A1E38]">International Arrival</option>
+      </select>
+    </div>
+  )}
         {/* Pick-up */}
-        <div className="px-10 border-r border-white/10">
-          {serviceType === "airport-pickup" ? (
+         <div className="px-10 border-r border-white/10">
+          {serviceType === "airport_pickup" ? (
             <AirportSelect
               label="Pick-up Location"
               value={pickupResult?.code ?? ""}
@@ -218,8 +239,8 @@ export default function CharterForm() {
         </div>
 
         {/* Drop-off */}
-        <div className="pl-10">
-          {serviceType === "airport-dropoff" ? (
+         <div className="pl-10">
+          {serviceType === "airport_dropoff" ? (
             <AirportSelect
               label="Drop-off Location"
               value={dropoffResult?.code ?? ""}
@@ -423,6 +444,8 @@ export default function CharterForm() {
             pax={pax}
             luggage={luggage}
             city={city ?? LasVegas}
+            airportType={airportType}
+            date={date}  
           />
         </div>
       )}
