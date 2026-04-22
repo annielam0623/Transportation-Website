@@ -15,7 +15,8 @@ export default function Navbar() {
           {[
             { label: 'Home', href: '/' },
             { label: 'Charter Bus', href: '/services#charter' },
-            { label: 'Fly & Drive', href: '/services#flydrive' },
+            { label: 'Self-Drive', href: '/services#selfdrive' },
+            { label: 'Hire Driver', href: '/services#hiredriver' },
             { label: 'Fleet', href: '/fleet' },
             { label: 'Book Now', href: '/booking' },
             { label: 'Contact', href: '#contact' },

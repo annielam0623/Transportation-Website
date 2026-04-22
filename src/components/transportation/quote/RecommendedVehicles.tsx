@@ -14,7 +14,7 @@ const TYPE_GRADIENTS: Record<string, string> = {
 export default function RecommendedVehicles({ options }: { options: MockVehicleOption[] }) {
   if (!options.length) {
     return (
-      <div className="text-center py-16 text-white/35 text-sm">
+      <div className="text-center py-16 text-white/50 text-base">
         No vehicles available for your group size. Please contact us for assistance.
       </div>
     )
@@ -22,7 +22,7 @@ export default function RecommendedVehicles({ options }: { options: MockVehicleO
 
   return (
     <div>
-      <p className="text-[0.62rem] tracking-[0.18em] uppercase text-white/35 mb-6">
+      <p className="text-xs tracking-[0.18em] uppercase text-white/40 mb-6">
         {options.length} vehicle{options.length !== 1 ? 's' : ''} matched
       </p>
 
@@ -38,8 +38,8 @@ export default function RecommendedVehicles({ options }: { options: MockVehicleO
           >
             {/* Recommended bar */}
             {v.tag === 'recommended' && (
-              <div className="bg-brand-silver/8 border-b border-brand-silver/15 px-6 py-2">
-                <span className="text-[0.6rem] tracking-[0.14em] uppercase text-brand-silver font-semibold">
+              <div className="bg-brand-silver/8 border-b border-brand-silver/15 px-6 py-2.5">
+                <span className="text-xs tracking-[0.14em] uppercase text-brand-silver font-semibold">
                   Recommended
                 </span>
               </div>
@@ -49,7 +49,7 @@ export default function RecommendedVehicles({ options }: { options: MockVehicleO
             <div className="flex">
               {/* Image */}
               <div
-                className="w-56 shrink-0 min-h-[180px]"
+                className="w-64 shrink-0 min-h-[200px]"
                 style={{ background: TYPE_GRADIENTS[v.type] ?? TYPE_GRADIENTS.COACH }}
               >
                 {v.imageUrl && (
@@ -66,15 +66,15 @@ export default function RecommendedVehicles({ options }: { options: MockVehicleO
 
                 {/* Name + availability */}
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-serif text-xl font-bold">{v.name}</h3>
+                  <h3 className="font-serif text-2xl font-bold">{v.name}</h3>
                   {v.available ? (
-                    <div className="flex items-center gap-1.5 text-green-400 text-xs">
-                      <CheckCircle size={13} />
+                    <div className="flex items-center gap-2 text-green-400 text-sm">
+                      <CheckCircle size={15} />
                       <span>Available</span>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-1.5 text-white/30 text-xs">
-                      <XCircle size={13} />
+                    <div className="flex items-center gap-2 text-white/30 text-sm">
+                      <XCircle size={15} />
                       <span>Unavailable</span>
                     </div>
                   )}
@@ -82,22 +82,22 @@ export default function RecommendedVehicles({ options }: { options: MockVehicleO
 
                 {/* Specs */}
                 <div className="flex gap-6 mb-4">
-                  <div className="flex items-center gap-1.5 text-white/50 text-xs">
-                    <Users size={12} className="text-brand-silver" />
+                  <div className="flex items-center gap-2 text-white/60 text-sm">
+                    <Users size={14} className="text-brand-silver" />
                     Up to {v.capacity} passengers
                   </div>
-                  <div className="flex items-center gap-1.5 text-white/50 text-xs">
-                    <Briefcase size={12} className="text-brand-silver" />
+                  <div className="flex items-center gap-2 text-white/60 text-sm">
+                    <Briefcase size={14} className="text-brand-silver" />
                     {v.luggageCapacity} bags
                   </div>
                 </div>
 
                 {/* Features */}
-                <div className="flex flex-wrap gap-1.5 mb-5">
+                <div className="flex flex-wrap gap-2 mb-5">
                   {v.features.map(f => (
                     <span
                       key={f}
-                      className="border border-white/10 text-white/38 text-[0.6rem] px-2 py-0.5 tracking-wide"
+                      className="border border-white/15 text-white/50 text-xs px-3 py-1 tracking-wide"
                     >
                       {f}
                     </span>
@@ -107,28 +107,27 @@ export default function RecommendedVehicles({ options }: { options: MockVehicleO
                 {/* Price + CTA */}
                 <div className="flex items-center justify-between pt-4 border-t border-white/8 mt-auto">
                   <div>
-                    <span className="text-[0.62rem] text-white/30 uppercase tracking-widest block">
+                    <span className="text-xs text-white/40 uppercase tracking-widest block mb-1">
                       {v.priceMode}
                     </span>
-                    <span className="text-2xl font-semibold">
+                    <span className="text-3xl font-semibold">
                       ${v.priceTotal.toLocaleString()}
                     </span>
                   </div>
 
                   {v.available ? (
                     
-                      <a
-                      href={`/fleet/${v.slug}`}
-                      className={`text-[0.68rem] tracking-[0.14em] uppercase font-semibold px-6 py-2.5 transition-colors ${
+                      <a href={`/fleet/${v.slug}`}
+                      className={`text-sm tracking-[0.12em] uppercase font-semibold px-7 py-3 transition-colors ${
                         v.tag === 'recommended'
                           ? 'bg-brand-silver text-[#04080F] hover:bg-white'
-                          : 'border border-white/20 text-white/60 hover:border-brand-silver/40 hover:text-white/90'
+                          : 'border border-white/20 text-white/70 hover:border-brand-silver/40 hover:text-white'
                       }`}
                     >
                       Book This Vehicle
                     </a>
                   ) : (
-                    <span className="text-[0.68rem] tracking-[0.14em] uppercase text-white/20 border border-white/10 px-6 py-2.5">
+                    <span className="text-sm tracking-[0.12em] uppercase text-white/25 border border-white/10 px-7 py-3">
                       Not Available
                     </span>
                   )}
