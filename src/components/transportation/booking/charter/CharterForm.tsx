@@ -1,7 +1,7 @@
-// components/transportation/booking/CharterForm.tsx
+
 // components/transportation/booking/charter/CharterForm.tsx
 "use client";
-
+import { useRouter } from 'next/navigation'
 import { useState } from "react";
 import {
   getAllCities,
@@ -26,6 +26,7 @@ const SERVICE_TYPES: { value: ServiceType; label: string; group: string }[] = [
 ];
 
 export default function CharterForm() {
+  const router = useRouter()
   const allCities = getAllCities();
   const [airportType, setAirportType] = useState<"domestic" | "international">("domestic");
   const [cityKey, setCityKey] = useState<CityKey>("las-vegas");
@@ -51,9 +52,21 @@ export default function CharterForm() {
   }
 
   function handleSubmit() {
-    if (!pickup || !dropoff || !date || !time) return;
-    setShowQuote(true);
-  }
+  if (!pickup || !dropoff || !date || !time) return
+
+  const params = new URLSearchParams({
+    serviceType,
+    from: pickup,
+    to: dropoff,
+    date,
+    time,
+    pax: String(pax),
+    luggage: String(luggage),
+    airportType,
+  })
+
+  router.push(`/charter/quote?${params.toString()}`)
+}
 
   function handleCityChange(key: CityKey) {
     setCityKey(key);
@@ -438,25 +451,7 @@ console.log("serviceType:", serviceType);
         >
           Check Vehicles & Price
         </button>
-      </div>
-
-      {/* Quote Result */}
-      {showQuote && (
-        <div className="mt-10 border-t border-white/10 pt-8">
-          <CharterQuoteResult
-            serviceType={serviceType}
-            pickup={pickup}
-            pickupResult={pickupResult}
-            dropoff={dropoff}
-            dropoffResult={dropoffResult}
-            pax={pax}
-            luggage={luggage}
-            city={city ?? LasVegas}
-            airportType={airportType}
-            date={date}  
-          />
-        </div>
-      )}
+      </div>  
     </div>
   );
 }

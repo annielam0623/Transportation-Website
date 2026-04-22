@@ -32,7 +32,16 @@ async function getFleetVehicles() {
 export default async function CharterQuotePage({
   searchParams,
 }: {
-  searchParams: SearchParams
+  searchParams: Promise<{
+    serviceType?: string
+    from?: string
+    to?: string
+    date?: string
+    time?: string
+    pax?: string
+    luggage?: string
+    airportType?: string
+  }>
 }) {
   const {
     serviceType = '',
@@ -42,7 +51,8 @@ export default async function CharterQuotePage({
     time = '',
     pax = '1',
     luggage = '0',
-  } = searchParams
+    airportType = 'domestic',
+  } = await searchParams
 
   // 参数缺失就跳回首页
   if (!serviceType || !from || !to || !date) {

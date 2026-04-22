@@ -1,7 +1,7 @@
 'use client'
 // src/components/fleet/FleetGrid.tsx
 import { useState } from 'react'
-import FleetCard from './fleetCard'
+import FleetCard from './FleetCard'
 import type { Vehicle } from '@/types'
 
 const FILTERS = [

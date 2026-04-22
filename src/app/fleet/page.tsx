@@ -1,7 +1,7 @@
 // src/app/fleet/page.tsx
 <<<<<<< HEAD
 import { prisma } from '@/lib/prisma'
-import Navbar from '@/components/layout/navbar'
+import Navbar from '@/components/layout/Navbar'
 import FleetGrid from '@/components/fleet/fleetGrid'
 =======
 import { prisma } from "@/lib/prisma";

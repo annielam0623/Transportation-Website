@@ -1,6 +1,6 @@
 "use client";
-import Navbar from "@/components/layout/navbar";
-import Topbar from "@/components/layout/topbar";
+import Navbar from "@/components/layout/Navbar";
+import Topbar from "@/components/layout/Topbar";
 
 export default function HeroSection() {
   return (
