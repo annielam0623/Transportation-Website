@@ -14,6 +14,24 @@ type Props = {
 }
 
 const SERVICE_LABELS: Record<string, string> = {
+  airport_pickup: 'Airport Pick-up',// src/components/transportation/quote/QuoteSummaryBar.tsx
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { MapPin, Calendar, Clock, Users, Briefcase } from 'lucide-react'
+
+type Props = {
+  serviceType: string
+  from: string
+  to: string
+  date: string
+  time: string
+  pax: number
+  luggage: number
+}
+
+const SERVICE_LABELS: Record<string, string> = {
   airport_pickup: 'Airport Pick-up',
   airport_dropoff: 'Airport Drop-off',
   in_town_transfer: 'In-Town Transfer',
@@ -43,52 +61,159 @@ function formatTime(timeStr: string) {
 }
 
 export default function QuoteSummaryBar({ serviceType, from, to, date, time, pax, luggage }: Props) {
+  const router = useRouter()
+  const [expanded, setExpanded] = useState(false)
+
+  // Edit form state
+  const [editFrom, setEditFrom] = useState(from)
+  const [editTo, setEditTo] = useState(to)
+  const [editDate, setEditDate] = useState(date)
+  const [editTime, setEditTime] = useState(time)
+  const [editPax, setEditPax] = useState(pax)
+  const [editLuggage, setEditLuggage] = useState(luggage)
+
+  function handleUpdate() {
+    const params = new URLSearchParams({
+      serviceType,
+      from: editFrom,
+      to: editTo,
+      date: editDate,
+      time: editTime,
+      pax: String(editPax),
+      luggage: String(editLuggage),
+    })
+    router.push(`/charter/quote?${params.toString()}`)
+  }
+
   return (
     <div className="bg-[#04080F] border-b border-white/8">
-      <div className="max-w-7xl mx-auto px-6 md:px-20 py-5">
 
-        <p className="text-[0.62rem] tracking-[0.18em] uppercase text-brand-silver mb-3 font-medium">
+      {/* Summary row */}
+      <div className="max-w-7xl mx-auto px-6 md:px-20 py-6">
+        <p className="text-[0.62rem] tracking-[0.18em] uppercase text-brand-silver mb-4 font-medium">
           {SERVICE_LABELS[serviceType] ?? serviceType}
         </p>
 
-        <div className="flex flex-wrap gap-x-8 gap-y-3">
+        <div className="flex flex-wrap gap-x-10 gap-y-4 mb-5">
 
-          <div className="flex items-center gap-2">
-            <MapPin size={13} className="text-brand-silver shrink-0" />
+          <div className="flex items-center gap-3">
+            <MapPin size={15} className="text-brand-silver shrink-0" />
             <span className="text-white/90 text-sm">{from}</span>
             <span className="text-white/25 text-xs mx-1">→</span>
             <span className="text-white/90 text-sm">{to}</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Calendar size={13} className="text-brand-silver shrink-0" />
+          <div className="flex items-center gap-3">
+            <Calendar size={15} className="text-brand-silver shrink-0" />
             <span className="text-white/70 text-sm">{formatDate(date)}</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Clock size={13} className="text-brand-silver shrink-0" />
+          <div className="flex items-center gap-3">
+            <Clock size={15} className="text-brand-silver shrink-0" />
             <span className="text-white/70 text-sm">{formatTime(time)}</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Users size={13} className="text-brand-silver shrink-0" />
+          <div className="flex items-center gap-3">
+            <Users size={15} className="text-brand-silver shrink-0" />
             <span className="text-white/70 text-sm">{pax} Passengers</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Briefcase size={13} className="text-brand-silver shrink-0" />
+          <div className="flex items-center gap-3">
+            <Briefcase size={15} className="text-brand-silver shrink-0" />
             <span className="text-white/70 text-sm">{luggage} Bags</span>
           </div>
 
         </div>
 
-        <div className="mt-4">
-          <a href="/#booking" className="text-[0.62rem] tracking-[0.14em] uppercase text-white/35 hover:text-brand-silver transition-colors">
-            ← Edit Search
-          </a>
-        </div>
-
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex items-center gap-2 text-[0.68rem] tracking-[0.12em] uppercase text-brand-silver border border-brand-silver/30 px-4 py-2 hover:bg-brand-silver/8 hover:border-brand-silver/50 transition-colors"
+        >
+          {expanded ? '✕ Close' : '✎ Edit Search'}
+        </button>
       </div>
+
+      {/* Expanded edit form */}
+      {expanded && (
+        <div className="bg-[#061628] border-t border-brand-silver/15 px-6 md:px-20 py-8">
+          <div className="max-w-7xl mx-auto">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+              <div>
+                <label className="block text-[0.62rem] tracking-[0.14em] uppercase text-white/35 mb-2">Pick-up Location</label>
+                <input
+                  type="text"
+                  value={editFrom}
+                  onChange={e => setEditFrom(e.target.value)}
+                  className="w-full bg-transparent border-b border-white/20 text-white text-sm py-2 outline-none focus:border-brand-silver/50 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-[0.62rem] tracking-[0.14em] uppercase text-white/35 mb-2">Drop-off Location</label>
+                <input
+                  type="text"
+                  value={editTo}
+                  onChange={e => setEditTo(e.target.value)}
+                  className="w-full bg-transparent border-b border-white/20 text-white text-sm py-2 outline-none focus:border-brand-silver/50 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-[0.62rem] tracking-[0.14em] uppercase text-white/35 mb-2">Date</label>
+                <input
+                  type="date"
+                  value={editDate}
+                  onChange={e => setEditDate(e.target.value)}
+                  className="w-full bg-transparent border-b border-white/20 text-white text-sm py-2 outline-none focus:border-brand-silver/50 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-[0.62rem] tracking-[0.14em] uppercase text-white/35 mb-2">Time</label>
+                <input
+                  type="time"
+                  value={editTime}
+                  onChange={e => setEditTime(e.target.value)}
+                  className="w-full bg-transparent border-b border-white/20 text-white text-sm py-2 outline-none focus:border-brand-silver/50 transition-colors"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-10 mb-8">
+              <div>
+                <label className="block text-[0.62rem] tracking-[0.14em] uppercase text-white/35 mb-2">Passengers</label>
+                <div className="flex items-center gap-4 border-b border-white/20 py-2">
+                  <button onClick={() => setEditPax(Math.max(1, editPax - 1))} className="text-white/40 hover:text-white transition-colors text-lg leading-none">−</button>
+                  <span className="text-white text-sm w-6 text-center">{editPax}</span>
+                  <button onClick={() => setEditPax(editPax + 1)} className="text-white/40 hover:text-white transition-colors text-lg leading-none">+</button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[0.62rem] tracking-[0.14em] uppercase text-white/35 mb-2">Luggage</label>
+                <div className="flex items-center gap-4 border-b border-white/20 py-2">
+                  <button onClick={() => setEditLuggage(Math.max(0, editLuggage - 1))} className="text-white/40 hover:text-white transition-colors text-lg leading-none">−</button>
+                  <span className="text-white text-sm w-6 text-center">{editLuggage}</span>
+                  <button onClick={() => setEditLuggage(editLuggage + 1)} className="text-white/40 hover:text-white transition-colors text-lg leading-none">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setExpanded(false)}
+                className="border border-white/15 text-white/40 text-[0.68rem] tracking-[0.14em] uppercase px-6 py-2.5 hover:border-white/30 hover:text-white/60 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdate}
+                className="bg-brand-silver text-[#04080F] text-[0.68rem] tracking-[0.14em] uppercase font-semibold px-8 py-2.5 hover:bg-white transition-colors"
+              >
+                Update Search
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   )
 }
