@@ -1,13 +1,9 @@
 // src/app/fleet/page.tsx
-<<<<<<< HEAD
-import { prisma } from '@/lib/prisma'
-import Navbar from '@/components/layout/Navbar'
-import FleetGrid from '@/components/fleet/fleetGrid'
-=======
+
 import { prisma } from "@/lib/prisma";
 import Navbar from "@/components/layout/Navbar";
 import FleetGrid from "@/components/transportation/fleet/FleetGrid";
->>>>>>> 63f696b3b2d3e0fa07485001f85c482b56452e43
+
 
 export const revalidate = 60; // revalidate every 60s
 
@@ -47,22 +43,7 @@ export default async function FleetPage() {
         <FleetGrid vehicles={vehicles as any} />
       </section>
 
-      {/* CTA */}
-      <section className="bg-[#0A428C] px-6 md:px-20 py-16 text-center">
-        <h2 className="font-serif text-3xl font-bold mb-3">
-          Need Help Choosing?
-        </h2>
-        <p className="text-white/70 mb-7 max-w-lg mx-auto">
-          Tell us your group size, route, and date — we'll recommend the right
-          vehicle and send you a quote within 2 hours.
-        </p>
-        <a
-          href="/booking"
-          className="inline-block bg-white text-brand-blue font-semibold text-sm tracking-widest uppercase px-8 py-3 hover:bg-brand-silver transition-colors"
-        >
-          Get a Free Quote →
-        </a>
-      </section>
+   
     </main>
   );
 }
