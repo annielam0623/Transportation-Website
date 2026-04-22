@@ -1,20 +1,5 @@
 // src/components/transportation/quote/QuoteSummaryBar.tsx
-'use client'
-
-import { MapPin, Calendar, Clock, Users, Briefcase } from 'lucide-react'
-
-type Props = {
-  serviceType: string
-  from: string
-  to: string
-  date: string
-  time: string
-  pax: number
-  luggage: number
-}
-
-const SERVICE_LABELS: Record<string, string> = {
-  airport_pickup: 'Airport Pick-up',// src/components/transportation/quote/QuoteSummaryBar.tsx
+// src/components/transportation/quote/QuoteSummaryBar.tsx
 'use client'
 
 import { useState } from 'react'
