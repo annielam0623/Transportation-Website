@@ -83,7 +83,7 @@ export default async function CharterQuotePage({
       </div>
 
       {/* Recommended vehicles */}
-      <section className="px-6 md:px-20 py-14">
+      <section className="px-[15%] py-14">
         <div className="mb-10">
           <p className="text-[0.62rem] tracking-[0.18em] uppercase text-brand-silver mb-2">
             Your Quote
@@ -102,7 +102,7 @@ export default async function CharterQuotePage({
       <div className="border-t border-white/5 mx-6 md:mx-20" />
 
       {/* Full fleet */}
-      <section className="px-6 md:px-20 py-14">
+      <section className="px-[15%] py-14">
         <div className="mb-10">
           <p className="text-[0.62rem] tracking-[0.18em] uppercase text-brand-silver mb-2">
             Our Fleet
