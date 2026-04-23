@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { SearchResult } from "@/lib/transportation/cities/las-vegas";
 
 interface LocationInputProps {
-  label: string;
+  label?: string;
   placeholder?: string;
   value: string;
   onChange: (value: string, result?: SearchResult) => void;
@@ -114,9 +114,11 @@ export default function LocationInput({
 
   return (
     <div ref={wrapperRef} className="relative w-full">
-      <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">
-        {label}
-      </p>
+      {label && (
+        <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">
+          {label}
+        </p>
+      )}
 
       <div className="relative">
         <input

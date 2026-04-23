@@ -22,3 +22,4 @@ export const LasVegas = {
 };
 
 export type { LocationZone, ServiceType, SearchResult };
+export { searchLasVegas } from './search'
