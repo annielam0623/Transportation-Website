@@ -20,8 +20,10 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </head>
       <body className="font-sans bg-black text-white">
-        {children}
-      </body>
+  <div className="px-[15%]">
+    {children}
+  </div>
+</body>
     </html>
   )
 }

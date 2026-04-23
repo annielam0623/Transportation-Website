@@ -8,7 +8,7 @@ import RecommendedVehicles from '@/components/transportation/quote/RecommendedVe
 import { getMockQuote } from '@/lib/transportation/charter/mockQuote'
 import { prisma } from '@/lib/prisma'
 
-type SearchParams = {
+type SearchParams = Promise<{
   serviceType?: string
   from?: string
   to?: string
@@ -16,7 +16,8 @@ type SearchParams = {
   time?: string
   pax?: string
   luggage?: string
-}
+  airportType?: string
+}>
 
 async function getFleetVehicles() {
   try {
@@ -32,16 +33,7 @@ async function getFleetVehicles() {
 export default async function CharterQuotePage({
   searchParams,
 }: {
-  searchParams: Promise<{
-    serviceType?: string
-    from?: string
-    to?: string
-    date?: string
-    time?: string
-    pax?: string
-    luggage?: string
-    airportType?: string
-  }>
+  searchParams: SearchParams
 }) {
   const {
     serviceType = '',
@@ -54,7 +46,6 @@ export default async function CharterQuotePage({
     airportType = 'domestic',
   } = await searchParams
 
-  // 参数缺失就跳回首页
   if (!serviceType || !from || !to || !date) {
     redirect('/#booking')
   }
@@ -69,7 +60,7 @@ export default async function CharterQuotePage({
     <main className="min-h-screen bg-[#020c18] text-white">
       <Navbar />
 
-      {/* Summary bar */}
+      {/* Summary bar — 全宽 */}
       <div className="pt-16">
         <QuoteSummaryBar
           serviceType={serviceType}
@@ -82,51 +73,55 @@ export default async function CharterQuotePage({
         />
       </div>
 
-      {/* Recommended vehicles */}
-      <section className="px-[15%] py-14">
-        <div className="mb-10">
-          <p className="text-[0.62rem] tracking-[0.18em] uppercase text-brand-silver mb-2">
-            Your Quote
-          </p>
-          <h1 className="font-serif text-4xl font-bold">
-            Available <span className="text-brand-silver">Vehicles</span>
-          </h1>
-        </div>
+      {/* 内容区 — 跟首页一致宽度 */}
+      <div className="px-[15%]">
 
-        <Suspense fallback={<div className="text-white/35 text-sm">Loading...</div>}>
-          <RecommendedVehicles options={options} />
-        </Suspense>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t border-white/5 mx-6 md:mx-20" />
-
-      {/* Full fleet */}
-      <section className="px-[15%] py-14">
-        <div className="mb-10">
-          <p className="text-[0.62rem] tracking-[0.18em] uppercase text-brand-silver mb-2">
-            Our Fleet
-          </p>
-          <h2 className="font-serif text-3xl font-bold">
-            Browse All <span className="text-brand-silver">Vehicles</span>
-          </h2>
-          <p className="text-white/45 text-sm mt-2 max-w-lg">
-            Every vehicle is commercially licensed, DOT-compliant, and maintained to the highest standard.
-          </p>
-        </div>
-
-        {fleetVehicles.length > 0 ? (
-          <FleetGrid vehicles={fleetVehicles as any} />
-        ) : (
-          <div className="grid md:grid-cols-3 gap-6">
-            {['Sprinter Van', 'Executive Sprinter', 'Mini Bus', 'Mid-Size Coach', 'Full-Size Coach'].map(name => (
-              <div key={name} className="bg-[#0A1628] border border-white/6 p-6 text-white/20 text-sm">
-                {name}
-              </div>
-            ))}
+        {/* Recommended vehicles */}
+        <section className="py-14">
+          <div className="mb-10">
+            <p className="text-xs tracking-[0.18em] uppercase text-brand-silver mb-2">
+              Your Quote
+            </p>
+            <h1 className="font-serif text-4xl font-bold">
+              Available <span className="text-brand-silver">Vehicles</span>
+            </h1>
           </div>
-        )}
-      </section>
+
+          <Suspense fallback={<div className="text-white/35 text-sm">Loading...</div>}>
+            <RecommendedVehicles options={options} />
+          </Suspense>
+        </section>
+
+        <div className="border-t border-white/5" />
+
+        {/* Full fleet */}
+        <section className="py-14">
+          <div className="mb-10">
+            <p className="text-xs tracking-[0.18em] uppercase text-brand-silver mb-2">
+              Our Fleet
+            </p>
+            <h2 className="font-serif text-3xl font-bold">
+              Browse All <span className="text-brand-silver">Vehicles</span>
+            </h2>
+            <p className="text-white/50 text-base mt-2 max-w-lg">
+              Every vehicle is commercially licensed, DOT-compliant, and maintained to the highest standard.
+            </p>
+          </div>
+
+          {fleetVehicles.length > 0 ? (
+            <FleetGrid vehicles={fleetVehicles as any} />
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {['Sprinter Van', 'Executive Sprinter', 'Mini Bus', 'Mid-Size Coach', 'Full-Size Coach'].map(name => (
+                <div key={name} className="bg-[#0A1628] border border-white/6 p-6 text-white/20 text-sm">
+                  {name}
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+      </div>
     </main>
   )
 }

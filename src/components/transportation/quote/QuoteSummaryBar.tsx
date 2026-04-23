@@ -71,7 +71,7 @@ export default function QuoteSummaryBar({ serviceType, from, to, date, time, pax
     <div className="bg-[#04080F] border-b border-white/8">
 
       {/* Summary row */}
-      <div className="px-[15%] py-14">
+      <div className="px-6 md:px-20 py-6">
         <p className="text-xs tracking-[0.18em] uppercase text-brand-silver mb-4 font-medium">
           {SERVICE_LABELS[serviceType] ?? serviceType}
         </p>
@@ -117,7 +117,7 @@ export default function QuoteSummaryBar({ serviceType, from, to, date, time, pax
 
       {/* Expanded edit form */}
       {expanded && (
-        <div className="bg-[#061628] border-t border-brand-silver/15 px-[15%] py-14">
+        <div className="bg-[#061628] border-t border-brand-silver/15 px-6 md:px-20 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             <div>
               <label className="block text-xs tracking-[0.14em] uppercase text-white/40 mb-2">Pick-up Location</label>
