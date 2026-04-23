@@ -1,7 +1,6 @@
-
 // components/transportation/booking/charter/CharterForm.tsx
 "use client";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   getAllCities,
@@ -14,29 +13,65 @@ import LocationInput from "@/components/transportation/ui/LocationInput";
 import CharterQuoteResult from "./CharterQuoteResult";
 
 const SERVICE_TYPES: { value: ServiceType; label: string; group: string }[] = [
-  { value: "airport_pickup",              label: "Airport Pick-up",                   group: "Transfers" },
-  { value: "airport_dropoff",             label: "Airport Drop-off",                  group: "Transfers" },
-  { value: "in_town_transfer",            label: "In Town Transfer",                  group: "Transfers" },
-  { value: "grand_canyon_national_park",  label: "Grand Canyon National Park",        group: "Day Tours" },
-  { value: "grand_canyon_west_rim",       label: "Grand Canyon West Rim",             group: "Day Tours" },
-  { value: "bryce_canyon_zion",           label: "Bryce & Zion",                      group: "Day Tours" },
-  { value: "antelope_canyon",             label: "Antelope Canyon",                   group: "Day Tours" },
-  { value: "valley_of_fire",              label: "Valley of Fire",                    group: "Day Tours" },
-  { value: "custom_out_of_town_transfer", label: "Custom Out-of-Town",               group: "Out of Town" },
+  { value: "airport_pickup", label: "Airport Pick-up", group: "Transfers" },
+  { value: "airport_dropoff", label: "Airport Drop-off", group: "Transfers" },
+  { value: "in_town_transfer", label: "In Town Transfer", group: "Transfers" },
+  {
+    value: "grand_canyon_national_park",
+    label: "Grand Canyon National Park",
+    group: "Day Tours",
+  },
+  {
+    value: "grand_canyon_west_rim",
+    label: "Grand Canyon West Rim",
+    group: "Day Tours",
+  },
+  { value: "bryce_canyon_zion", label: "Bryce & Zion", group: "Day Tours" },
+  { value: "antelope_canyon", label: "Antelope Canyon", group: "Day Tours" },
+  { value: "valley_of_fire", label: "Valley of Fire", group: "Day Tours" },
+  {
+    value: "custom_out_of_town_transfer",
+    label: "Custom Out-of-Town",
+    group: "Out of Town",
+  },
 ];
 
+function getMinDate(): string {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString().split("T")[0];
+}
+
+function isTomorrow(dateStr: string): boolean {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  d.setHours(0, 0, 0, 0);
+  const tomorrow = d.toISOString().split("T")[0];
+  return dateStr === tomorrow;
+}
+
+function getCurrentTime(): string {
+  const now = new Date();
+  return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+}
+
 export default function CharterForm() {
-  const router = useRouter()
+  const router = useRouter();
   const allCities = getAllCities();
-  const [airportType, setAirportType] = useState<"domestic" | "international">("domestic");
+  const [airportType, setAirportType] = useState<"domestic" | "international">(
+    "domestic",
+  );
   const [cityKey, setCityKey] = useState<CityKey>("las-vegas");
   const [serviceType, setServiceType] = useState<ServiceType>("airport_pickup");
   const [pickup, setPickup] = useState("");
-  const [pickupResult, setPickupResult] = useState<SearchResult | undefined>();
+  const [pickupResult, setPickupResult] = useState<SearchResult | undefined>(
+    undefined,
+  );
   const [dropoff, setDropoff] = useState("");
-  const [dropoffResult, setDropoffResult] = useState<
-    SearchResult | undefined
-  >();
+  const [dropoffResult, setDropoffResult] = useState<SearchResult | undefined>(
+    undefined,
+  );
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [luggage, setLuggage] = useState(1);
@@ -52,21 +87,21 @@ export default function CharterForm() {
   }
 
   function handleSubmit() {
-  if (!pickup || !dropoff || !date || !time) return
+    if (!pickup || !dropoff || !date || !time) return;
 
-  const params = new URLSearchParams({
-    serviceType,
-    from: pickup,
-    to: dropoff,
-    date,
-    time,
-    pax: String(pax),
-    luggage: String(luggage),
-    airportType,
-  })
+    const params = new URLSearchParams({
+      serviceType,
+      from: pickup,
+      to: dropoff,
+      date,
+      time,
+      pax: String(pax),
+      luggage: String(luggage),
+      airportType,
+    });
 
-  router.push(`/charter/quote?${params.toString()}`)
-}
+    router.push(`/charter/quote?${params.toString()}`);
+  }
 
   function handleCityChange(key: CityKey) {
     setCityKey(key);
@@ -86,7 +121,6 @@ export default function CharterForm() {
     setShowQuote(false);
   }
 
-  // 机场下拉组件
   function AirportSelect({
     label,
     value,
@@ -129,33 +163,26 @@ export default function CharterForm() {
       </div>
     );
   }
-  function getMinTime(): string {
-    if (!date) return "";
-    const tomorrow = new Date(Date.now() + 86400000)
-      .toISOString()
-      .split("T")[0];
-    if (date === tomorrow) {
-      const now = new Date();
-      const hh = String(now.getHours()).padStart(2, "0");
-      const mm = String(now.getMinutes()).padStart(2, "0");
-      return `${hh}:${mm}`;
-    }
-    return "";
-  }
-console.log("serviceType:", serviceType);
+
+  const minDate = getMinDate();
+  const minTime = date && isTomorrow(date) ? getCurrentTime() : undefined;
+
+  console.log("serviceType:", serviceType);
+
   return (
     <div className="w-full pt-8">
-      {/* Row 1: City / Service Type /Airport Type / pick up / dropoff */}
+      {/* Row 1: City / Service Type / Airport Type / pick up / dropoff */}
       <div
-  style={{
-    display: "grid",
-    gridTemplateColumns:
-      serviceType === "airport_pickup" || serviceType === "airport_dropoff"
-        ? "repeat(5, 1fr)"
-        : "repeat(4, 1fr)",
-  }}
-  className="border-b border-white/10 pb-8 gap-0"
->
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            serviceType === "airport_pickup" ||
+            serviceType === "airport_dropoff"
+              ? "repeat(5, 1fr)"
+              : "repeat(4, 1fr)",
+        }}
+        className="border-b border-white/10 pb-8 gap-0"
+      >
         {/* City */}
         <div className="pr-10 border-r border-white/10">
           <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">
@@ -182,43 +209,65 @@ console.log("serviceType:", serviceType);
         </div>
 
         {/* Service Type */}
-         <div className="px-10 border-r border-white/10">
-  <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">Service Type</p>
-  <select
-    value={serviceType}
-    onChange={(e) => handleServiceTypeChange(e.target.value as ServiceType)}
-    className="w-full bg-transparent text-sm text-white outline-none cursor-pointer
+        <div className="px-10 border-r border-white/10">
+          <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">
+            Service Type
+          </p>
+          <select
+            value={serviceType}
+            onChange={(e) =>
+              handleServiceTypeChange(e.target.value as ServiceType)
+            }
+            className="w-full bg-transparent text-sm text-white outline-none cursor-pointer
                border-b border-white/20 py-1.5 appearance-none"
-  >
-    {["Transfers", "Day Tours", "Out of Town"].map((group) => (
-      <optgroup key={group} label={`── ${group}`} className="bg-[#020c18] text-white/50">
-        {SERVICE_TYPES.filter((s) => s.group === group).map((s) => (
-          <option key={s.value} value={s.value} className="bg-[#0A1E38] text-white">
-            {s.label}
-          </option>
-        ))}
-      </optgroup>
-    ))}
-  </select>
-</div>
+          >
+            {["Transfers", "Day Tours", "Out of Town"].map((group) => (
+              <optgroup
+                key={group}
+                label={`── ${group}`}
+                className="bg-[#020c18] text-white/50"
+              >
+                {SERVICE_TYPES.filter((s) => s.group === group).map((s) => (
+                  <option
+                    key={s.value}
+                    value={s.value}
+                    className="bg-[#0A1E38] text-white"
+                  >
+                    {s.label}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
 
-  {/* Airport Type — 条件显示 */}
-  {(serviceType === "airport_pickup" || serviceType === "airport_dropoff") && (
-    <div className="px-10 border-r border-white/10">
-      <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">Flight Type</p>
-      <select
-        value={airportType}
-        onChange={(e) => setAirportType(e.target.value as "domestic" | "international")}
-        className="w-full bg-transparent text-sm text-white outline-none cursor-pointer
-                   border-b border-white/20 py-1.5 appearance-none"
-      >
-        <option value="domestic" className="bg-[#0A1E38]">Domestic / Outbound</option>
-        <option value="international" className="bg-[#0A1E38]">International Arrival</option>
-      </select>
-    </div>
-  )}
+        {/* Flight Type — airport only */}
+        {(serviceType === "airport_pickup" ||
+          serviceType === "airport_dropoff") && (
+          <div className="px-10 border-r border-white/10">
+            <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">
+              Flight Type
+            </p>
+            <select
+              value={airportType}
+              onChange={(e) =>
+                setAirportType(e.target.value as "domestic" | "international")
+              }
+              className="w-full bg-transparent text-sm text-white outline-none cursor-pointer
+                         border-b border-white/20 py-1.5 appearance-none"
+            >
+              <option value="domestic" className="bg-[#0A1E38] text-white">
+                Domestic
+              </option>
+              <option value="international" className="bg-[#0A1E38] text-white">
+                International
+              </option>
+            </select>
+          </div>
+        )}
+
         {/* Pick-up */}
-         <div className="px-10 border-r border-white/10">
+        <div className="px-10 border-r border-white/10">
           {serviceType === "airport_pickup" ? (
             <AirportSelect
               label="Pick-up Location"
@@ -252,7 +301,7 @@ console.log("serviceType:", serviceType);
         </div>
 
         {/* Drop-off */}
-         <div className="pl-10">
+        <div className="pl-10">
           {serviceType === "airport_dropoff" ? (
             <AirportSelect
               label="Drop-off Location"
@@ -296,7 +345,7 @@ console.log("serviceType:", serviceType);
           <input
             type="date"
             value={date}
-            min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
+            min={minDate}
             onChange={(e) => setDate(e.target.value)}
             onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
             className="w-full bg-transparent border-b border-white/20 text-sm text-white
@@ -309,57 +358,32 @@ console.log("serviceType:", serviceType);
           <p className="text-[10px] tracking-widest text-white/40 uppercase mb-1.5">
             Time
           </p>
-
           <input
-  type="time"
-  value={time}
-  onChange={(e) => {
-    const selectedTime = e.target.value;
-    // 如果是明天，检查时间是否在当前时间之后
-    if (date) {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const selectedDate = new Date(date + "T00:00:00");
-      const isTomorrow =
-        selectedDate.toDateString() === tomorrow.toDateString();
-      if (isTomorrow) {
-        const now = new Date();
-        const minTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
-        if (selectedTime < minTime) {
-          setTime(minTime);
-          return;
-        }
-      }
-    }
-    setTime(selectedTime);
-  }}
-  onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
-  min={(() => {
-    if (!date) return undefined;
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const selectedDate = new Date(date + "T00:00:00");
-    const isTomorrow =
-      selectedDate.toDateString() === tomorrow.toDateString();
-    if (isTomorrow) {
-      const now = new Date();
-      return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
-    }
-    return undefined;
-  })()}
-  className="w-full bg-transparent border-b border-white/20 text-sm text-white
+            type="time"
+            value={time}
+            min={minTime}
+            onChange={(e) => {
+              const selectedTime = e.target.value;
+              if (
+                date &&
+                isTomorrow(date) &&
+                minTime &&
+                selectedTime < minTime
+              ) {
+                setTime(minTime);
+                return;
+              }
+              setTime(selectedTime);
+            }}
+            onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
+            className="w-full bg-transparent border-b border-white/20 text-sm text-white
              outline-none py-1.5 cursor-pointer"
-/>
-{date && (() => {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const selectedDate = new Date(date + "T00:00:00");
-  return selectedDate.toDateString() === tomorrow.toDateString();
-})() && (
-  <p className="text-[10px] text-white/30 mt-1">
-    All the bookings require 24 hour advance notice.
-  </p>
-)}
+          />
+          {date && isTomorrow(date) && (
+            <p className="text-[10px] text-white/30 mt-1">
+              All the bookings require 24 hour advance notice.
+            </p>
+          )}
         </div>
 
         {/* Luggage */}
@@ -368,25 +392,33 @@ console.log("serviceType:", serviceType);
             Luggage
           </p>
           <div className="flex items-center gap-3 border-b border-white/20 py-1.5">
-  <button
-    onClick={() => setLuggage((v) => Math.max(0, v - 1))}
-    className="text-white/40 hover:text-white transition-colors text-base leading-none"
-  >−</button>
-  <input
-    type="number"
-    min={0}
-    max={20}
-    value={luggage}
-    onChange={(e) => setLuggage(Math.min(20, Math.max(0, parseInt(e.target.value) || 0)))}
-    className="w-8 text-center text-sm text-white bg-transparent outline-none 
+            <button
+              onClick={() => setLuggage((v) => Math.max(0, v - 1))}
+              className="text-white/40 hover:text-white transition-colors text-base leading-none"
+            >
+              −
+            </button>
+            <input
+              type="number"
+              min={0}
+              max={20}
+              value={luggage}
+              onChange={(e) =>
+                setLuggage(
+                  Math.min(20, Math.max(0, parseInt(e.target.value) || 0)),
+                )
+              }
+              className="w-8 text-center text-sm text-white bg-transparent outline-none 
                [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
                [&::-webkit-inner-spin-button]:appearance-none"
-  />
-  <button
-    onClick={() => setLuggage((v) => Math.min(20, v + 1))}
-    className="text-white/40 hover:text-white transition-colors text-base leading-none"
-  >+</button>
-</div>
+            />
+            <button
+              onClick={() => setLuggage((v) => Math.min(20, v + 1))}
+              className="text-white/40 hover:text-white transition-colors text-base leading-none"
+            >
+              +
+            </button>
+          </div>
         </div>
 
         {/* Pax */}
@@ -395,25 +427,33 @@ console.log("serviceType:", serviceType);
             Pax
           </p>
           <div className="flex items-center gap-3 border-b border-white/20 py-1.5">
-  <button
-    onClick={() => setPax((v) => Math.max(1, v - 1))}
-    className="text-white/40 hover:text-white transition-colors text-base leading-none"
-  >−</button>
-  <input
-    type="number"
-    min={0}
-    max={200}
-    value={pax}
-    onChange={(e) => setPax(Math.min(100, Math.max(1, parseInt(e.target.value) || 0)))}
-    className="w-8 text-center text-sm text-white bg-transparent outline-none 
+            <button
+              onClick={() => setPax((v) => Math.max(1, v - 1))}
+              className="text-white/40 hover:text-white transition-colors text-base leading-none"
+            >
+              −
+            </button>
+            <input
+              type="number"
+              min={0}
+              max={200}
+              value={pax}
+              onChange={(e) =>
+                setPax(
+                  Math.min(100, Math.max(1, parseInt(e.target.value) || 0)),
+                )
+              }
+              className="w-8 text-center text-sm text-white bg-transparent outline-none 
                [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
                [&::-webkit-inner-spin-button]:appearance-none"
-  />
-  <button
-    onClick={() => setPax((v) => Math.min(100, v + 1))}
-    className="text-white/40 hover:text-white transition-colors text-base leading-none"
-  >+</button>
-</div>
+            />
+            <button
+              onClick={() => setPax((v) => Math.min(100, v + 1))}
+              className="text-white/40 hover:text-white transition-colors text-base leading-none"
+            >
+              +
+            </button>
+          </div>
         </div>
 
         {/* Submit */}
@@ -435,6 +475,7 @@ console.log("serviceType:", serviceType);
           </button>
         </div>
       </div>
+
       <div className="hidden max-lg:flex justify-center mt-6">
         <button
           onClick={handleSubmit}
@@ -451,7 +492,7 @@ console.log("serviceType:", serviceType);
         >
           Check Vehicles & Price
         </button>
-      </div>  
+      </div>
     </div>
   );
 }

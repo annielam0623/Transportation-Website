@@ -119,14 +119,15 @@ export default function EditSearchModal({
     };
   }, [isOpen]);
 
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
   const minDate = tomorrow.toISOString().split("T")[0];
-  const today = new Date();
   const tomorrowStr = minDate;
   const minTime =
     date === tomorrowStr
-      ? `${String(today.getHours()).padStart(2, "0")}:${String(today.getMinutes()).padStart(2, "0")}`
+      ? `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`
       : undefined;
 
   const airports = AIRPORTS_BY_CITY[city] || AIRPORTS_BY_CITY["las_vegas"];
@@ -164,7 +165,7 @@ export default function EditSearchModal({
   if (!isOpen) return null;
 
   const labelCls =
-    "block text-[0.6rem] tracking-[0.2em] uppercase text-[#9AA8B8] mb-1.5";
+    "block text-[0.7rem] tracking-[0.2em] uppercase text-[#9AA8B8] mb-1.5";
   const borderB = "1px solid rgba(154,168,184,0.35)";
 
   const SelectWrap = ({ children }: { children: React.ReactNode }) => (
@@ -177,7 +178,7 @@ export default function EditSearchModal({
   );
 
   const selectCls =
-    "w-full bg-transparent border-none outline-none text-[#E8ECF2] text-[13px] pb-2 pt-1 pr-5 appearance-none cursor-pointer";
+    "w-full bg-transparent border-none outline-none text-[#E8ECF2] text-[15px] pb-2 pt-1 pr-5 appearance-none cursor-pointer";
 
   return (
     <div
@@ -188,7 +189,7 @@ export default function EditSearchModal({
       }}
     >
       <div
-        className="w-full max-w-[600px] rounded-lg overflow-hidden"
+        className="w-full max-w-[820px] rounded-lg overflow-hidden"
         style={{
           background: "#020c18",
           border: "0.5px solid rgba(154,168,184,0.25)",
@@ -400,7 +401,7 @@ export default function EditSearchModal({
                 value={date}
                 min={minDate}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-transparent border-none outline-none text-[#E8ECF2] text-[13px] pb-2 pt-1"
+                className="w-full bg-transparent border-none outline-none text-[#E8ECF2] text-[15px] pb-2 pt-1"
                 style={{ borderBottom: borderB, colorScheme: "dark" }}
               />
             </div>
@@ -411,7 +412,7 @@ export default function EditSearchModal({
                 value={time}
                 min={minTime}
                 onChange={(e) => setTime(e.target.value)}
-                className="w-full bg-transparent border-none outline-none text-[#E8ECF2] text-[13px] pb-2 pt-1"
+                className="w-full bg-transparent border-none outline-none text-[#E8ECF2] text-[15px] pb-2 pt-1"
                 style={{ borderBottom: borderB, colorScheme: "dark" }}
               />
             </div>
@@ -428,7 +429,7 @@ export default function EditSearchModal({
                 >
                   −
                 </button>
-                <span className="text-[#E8ECF2] text-[13px] w-5 text-center">
+                <span className="text-[#E8ECF2] text-[15px] w-5 text-center">
                   {pax}
                 </span>
                 <button
@@ -453,7 +454,7 @@ export default function EditSearchModal({
                 >
                   −
                 </button>
-                <span className="text-[#E8ECF2] text-[13px] w-5 text-center">
+                <span className="text-[#E8ECF2] text-[15px] w-5 text-center">
                   {luggage}
                 </span>
                 <button
