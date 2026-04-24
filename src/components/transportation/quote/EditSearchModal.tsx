@@ -119,16 +119,31 @@ export default function EditSearchModal({
     };
   }, [isOpen]);
 
-  const now = new Date();
-  const tomorrow = new Date(now);
-  tomorrow.setDate(now.getDate() + 1);
-  tomorrow.setHours(0, 0, 0, 0);
-  const minDate = tomorrow.toISOString().split("T")[0];
-  const tomorrowStr = minDate;
-  const minTime =
-    date === tomorrowStr
-      ? `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`
-      : undefined;
+  /// 换成：
+  function getMinDate(): string {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    d.setHours(0, 0, 0, 0);
+    return d.toISOString().split("T")[0];
+  }
+  function isTomorrow(dateStr: string): boolean {
+    return dateStr === getMinDate();
+  }
+  function getCurrentTime(): string {
+    const now = new Date();
+    return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  }
+
+  const minDate = getMinDate();
+  const minTime = date && isTomorrow(date) ? getCurrentTime() : undefined;
+
+  const handleTimeChange = (val: string) => {
+    if (isTomorrow(date) && val < getCurrentTime()) {
+      setTime(getCurrentTime());
+    } else {
+      setTime(val);
+    }
+  };
 
   const airports = AIRPORTS_BY_CITY[city] || AIRPORTS_BY_CITY["las_vegas"];
   const searchFn = searchLasVegas;
@@ -401,6 +416,7 @@ export default function EditSearchModal({
                 value={date}
                 min={minDate}
                 onChange={(e) => setDate(e.target.value)}
+                onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
                 className="w-full bg-transparent border-none outline-none text-[#E8ECF2] text-[15px] pb-2 pt-1"
                 style={{ borderBottom: borderB, colorScheme: "dark" }}
               />
@@ -411,10 +427,16 @@ export default function EditSearchModal({
                 type="time"
                 value={time}
                 min={minTime}
-                onChange={(e) => setTime(e.target.value)}
+                // 换成：
+                onChange={(e) => handleTimeChange(e.target.value)}
                 className="w-full bg-transparent border-none outline-none text-[#E8ECF2] text-[15px] pb-2 pt-1"
                 style={{ borderBottom: borderB, colorScheme: "dark" }}
               />
+              {date && isTomorrow(date) && (
+                <p className="text-[10px] text-white/60 mt-3">
+                  All bookings require 24 hour advance notice.
+                </p>
+              )}
             </div>
             <div>
               <label className={labelCls}>Passengers</label>

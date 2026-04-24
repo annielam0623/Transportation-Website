@@ -1,13 +1,49 @@
 "use client";
 
 import { Users, Briefcase, CheckCircle, XCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type { MockVehicleOption } from "@/lib/transportation/charter/mockQuote";
+
+type TripParams = {
+  serviceType: string;
+  from: string;
+  to: string;
+  date: string;
+  time: string;
+  pax: number;
+  luggage: number;
+  airportType?: string;
+  city?: string;
+};
 
 export default function RecommendedVehicles({
   options,
+  tripParams,
 }: {
   options: MockVehicleOption[];
+  tripParams: TripParams;
 }) {
+  const router = useRouter();
+
+  function handleBook(v: MockVehicleOption) {
+    const params = new URLSearchParams({
+      serviceType: tripParams.serviceType,
+      from: tripParams.from,
+      to: tripParams.to,
+      date: tripParams.date,
+      time: tripParams.time,
+      pax: String(tripParams.pax),
+      luggage: String(tripParams.luggage),
+      airportType: tripParams.airportType ?? "domestic",
+      city: tripParams.city ?? "las_vegas",
+      vehicleSlug: v.slug,
+      vehicleName: v.name,
+      vehiclePrice: String(v.priceTotal),
+      vehiclePriceMode: v.priceMode,
+    });
+    router.push(`/charter/booking?${params.toString()}`);
+  }
+
   if (!options.length) {
     return (
       <div className="text-center py-16 text-white/50 text-base">
@@ -19,7 +55,7 @@ export default function RecommendedVehicles({
 
   return (
     <div className="flex flex-col">
-      {options.map((v, idx) => (
+      {options.map((v) => (
         <div
           key={v.slug}
           className="relative w-full"
@@ -45,7 +81,7 @@ export default function RecommendedVehicles({
 
           {/* Main layout */}
           <div className="flex min-h-[280px]">
-            {/* Image — left, large */}
+            {/* Image — left */}
             <div className="w-[45%] shrink-0 relative overflow-hidden bg-[#071020]">
               {v.imageUrl ? (
                 <img
@@ -61,53 +97,53 @@ export default function RecommendedVehicles({
             </div>
 
             {/* Info — right */}
-            <div className="flex-1 px-10 py-8 flex flex-col justify-between">
-              <div>
-                {/* Name + availability */}
-                <div className="flex items-start justify-between mb-4">
-                  <h3
-                    className="text-2xl text-white"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+            <div className="flex-1 px-10 py-8 flex flex-col">
+              {/* Available badge */}
+              <div className="flex justify-end mb-6">
+                {v.available ? (
+                  <div className="flex items-center gap-1.5 text-green-400 text-xs tracking-wide">
+                    <CheckCircle size={13} />
+                    <span>Available</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1.5 text-white/30 text-xs tracking-wide">
+                    <XCircle size={13} />
+                    <span>Unavailable</span>
+                  </div>
+                )}
+              </div>
+
+              {/* 车辆名 */}
+              <h3
+                className="text-2xl text-white mb-3"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                {v.name}
+              </h3>
+
+              {/* Specs */}
+              <div className="flex gap-6 mb-6">
+                <div className="flex items-center gap-2 text-white/50 text-sm">
+                  <Users size={13} className="text-brand-silver" />
+                  Up to {v.capacity} passengers
+                </div>
+                <div className="flex items-center gap-2 text-white/50 text-sm">
+                  <Briefcase size={13} className="text-brand-silver" />
+                  {v.luggageCapacity} bags
+                </div>
+              </div>
+
+              {/* Features */}
+              <div className="flex flex-wrap gap-2 mb-auto">
+                {v.features.map((f) => (
+                  <span
+                    key={f}
+                    className="text-[11px] tracking-wide text-white/40 px-3 py-1"
+                    style={{ border: "1px solid rgba(255,255,255,0.1)" }}
                   >
-                    {v.name}
-                  </h3>
-                  {v.available ? (
-                    <div className="flex items-center gap-1.5 text-green-400 text-xs tracking-wide">
-                      <CheckCircle size={13} />
-                      <span>Available</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-1.5 text-white/30 text-xs tracking-wide">
-                      <XCircle size={13} />
-                      <span>Unavailable</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Specs */}
-                <div className="flex gap-6 mb-5">
-                  <div className="flex items-center gap-2 text-white/50 text-sm">
-                    <Users size={13} className="text-brand-silver" />
-                    Up to {v.capacity} passengers
-                  </div>
-                  <div className="flex items-center gap-2 text-white/50 text-sm">
-                    <Briefcase size={13} className="text-brand-silver" />
-                    {v.luggageCapacity} bags
-                  </div>
-                </div>
-
-                {/* Features */}
-                <div className="flex flex-wrap gap-2">
-                  {v.features.map((f) => (
-                    <span
-                      key={f}
-                      className="text-[11px] tracking-wide text-white/40 px-3 py-1"
-                      style={{ border: "1px solid rgba(255,255,255,0.1)" }}
-                    >
-                      {f}
-                    </span>
-                  ))}
-                </div>
+                    {f}
+                  </span>
+                ))}
               </div>
 
               {/* Price + CTA */}
@@ -125,8 +161,8 @@ export default function RecommendedVehicles({
                 </div>
 
                 {v.available ? (
-                  <a
-                    href={`/fleet/${v.slug}`}
+                  <button
+                    onClick={() => handleBook(v)}
                     className="text-[11px] tracking-[0.15em] uppercase font-semibold px-8 py-3 transition-colors"
                     style={
                       v.tag === "recommended"
@@ -138,7 +174,7 @@ export default function RecommendedVehicles({
                     }
                   >
                     Book This Vehicle
-                  </a>
+                  </button>
                 ) : (
                   <span
                     className="text-[11px] tracking-[0.15em] uppercase text-white/20 px-8 py-3"

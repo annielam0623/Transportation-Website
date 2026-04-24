@@ -70,52 +70,57 @@ export default function QuoteSummaryBar({
 
   return (
     <>
-      <div className="bg-[#04080F] border-b border-white/8">
+      <div className="bg-[#04080F]">
         <div className="px-6 md:px-20 py-6">
           <p className="text-xs tracking-[0.18em] uppercase text-brand-silver mb-4 font-medium">
             {SERVICE_LABELS[serviceType] ?? serviceType}
           </p>
 
-          <div className="flex flex-wrap gap-x-10 gap-y-4 mb-5">
-            <div className="flex items-center gap-3">
-              <MapPin size={16} className="text-brand-silver shrink-0" />
-              <span className="text-white text-base">{from}</span>
-              {to && (
-                <>
-                  <span className="text-white/30 text-sm mx-1">→</span>
-                  <span className="text-white text-base">{to}</span>
-                </>
-              )}
+          <div className="flex items-center justify-between">
+            <div className="flex flex-wrap gap-x-10 gap-y-4">
+              <div className="flex items-center gap-3">
+                <MapPin size={16} className="text-brand-silver shrink-0" />
+                <span className="text-white text-base">{from}</span>
+                {to && (
+                  <>
+                    <span className="text-white/30 text-sm mx-1">→</span>
+                    <span className="text-white text-base">{to}</span>
+                  </>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                <Calendar size={16} className="text-brand-silver shrink-0" />
+                <span className="text-white/80 text-base">
+                  {formatDate(date)}
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Clock size={16} className="text-brand-silver shrink-0" />
+                <span className="text-white/80 text-base">
+                  {formatTime(time)}
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Users size={16} className="text-brand-silver shrink-0" />
+                <span className="text-white/80 text-base">
+                  {pax} Passengers
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Briefcase size={16} className="text-brand-silver shrink-0" />
+                <span className="text-white/80 text-base">{luggage} Bags</span>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Calendar size={16} className="text-brand-silver shrink-0" />
-              <span className="text-white/80 text-base">
-                {formatDate(date)}
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Clock size={16} className="text-brand-silver shrink-0" />
-              <span className="text-white/80 text-base">
-                {formatTime(time)}
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Users size={16} className="text-brand-silver shrink-0" />
-              <span className="text-white/80 text-base">{pax} Passengers</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Briefcase size={16} className="text-brand-silver shrink-0" />
-              <span className="text-white/80 text-base">{luggage} Bags</span>
-            </div>
-          </div>
 
-          <button
-            onClick={() => setModalOpen(true)}
-            className="flex items-center gap-2 text-sm tracking-[0.1em] uppercase text-brand-silver border border-brand-silver/30 px-4 py-2 hover:bg-brand-silver/8 hover:border-brand-silver/50 transition-colors"
-          >
-            ✎ Edit Search
-          </button>
+            <button
+              onClick={() => setModalOpen(true)}
+              className="flex items-center gap-2 text-sm tracking-[0.1em] uppercase text-brand-silver border border-brand-silver/30 px-4 py-2 hover:bg-brand-silver/8 hover:border-brand-silver/50 transition-colors shrink-0 ml-8"
+            >
+              ✎ Edit Search
+            </button>
+          </div>
         </div>
+        <div className="border-b border-white/10" />
       </div>
 
       <EditSearchModal

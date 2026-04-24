@@ -17,6 +17,7 @@ type SearchParams = Promise<{
   pax?: string;
   luggage?: string;
   airportType?: string;
+  city?: string;
 }>;
 
 async function getFleetVehicles() {
@@ -44,6 +45,7 @@ export default async function CharterQuotePage({
     pax = "1",
     luggage = "0",
     airportType = "domestic",
+    city = "las_vegas",
   } = await searchParams;
 
   if (!serviceType || !from || !to || !date) {
@@ -56,11 +58,23 @@ export default async function CharterQuotePage({
   const { options } = getMockQuote(passengerCount, luggageCount);
   const fleetVehicles = await getFleetVehicles();
 
+  const tripParams = {
+    serviceType,
+    from,
+    to,
+    date,
+    time,
+    pax: passengerCount,
+    luggage: luggageCount,
+    airportType,
+    city,
+  };
+
   return (
     <main className="min-h-screen bg-[#020c18] text-white">
       <Navbar />
 
-      {/* Summary bar — 全宽 */}
+      {/* Summary bar */}
       <div className="pt-16">
         <QuoteSummaryBar
           serviceType={serviceType}
@@ -70,11 +84,13 @@ export default async function CharterQuotePage({
           time={time}
           pax={passengerCount}
           luggage={luggageCount}
+          city={city}
+          airportType={airportType}
         />
       </div>
 
       {/* 标题区 */}
-      <div className="px-[15%] pt-12 pb-8">
+      <div className="pt-10 pb-6 px-6 md:px-20">
         <p className="text-xs tracking-[0.18em] uppercase text-brand-silver mb-2">
           Your Quote
         </p>
@@ -83,13 +99,13 @@ export default async function CharterQuotePage({
         </h1>
       </div>
 
-      {/* 全宽车辆卡片 */}
+      {/* 车辆卡片 */}
       <Suspense
         fallback={
           <div className="text-white/35 text-sm px-[15%]">Loading...</div>
         }
       >
-        <RecommendedVehicles options={options} />
+        <RecommendedVehicles options={options} tripParams={tripParams} />
       </Suspense>
 
       <div className="border-t border-white/5" />
