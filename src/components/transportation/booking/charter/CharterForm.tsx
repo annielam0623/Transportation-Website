@@ -17,8 +17,8 @@ const SERVICE_TYPES: { value: ServiceType; label: string; group: string }[] = [
   { value: "airport_dropoff", label: "Airport Drop-off", group: "Transfers" },
   { value: "in_town_transfer", label: "In Town Transfer", group: "Transfers" },
   {
-    value: "grand_canyon_national_park",
-    label: "Grand Canyon National Park",
+    value: "grand_canyon_south",
+    label: "Grand Canyon National Park (South Rim)",
     group: "Day Tours",
   },
   {
