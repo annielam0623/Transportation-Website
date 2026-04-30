@@ -243,7 +243,7 @@ export default function MultiDayForm() {
   const [days, setDays] = useState<DayItem[]>([defaultDay("day-1")]);
 
   const city = getActiveCity(cityKey);
-  const cityAirports = city?.airports ?? [];
+  const cityAirports = [...(city?.airports ?? [])];
 
   function handleSearch(query: string): SearchResult[] {
     if (!city) return [];
