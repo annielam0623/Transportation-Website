@@ -29,6 +29,7 @@ export type ServiceType =
   | "lax_airport_transfer"
   | "grand_canyon_west_rim"
   | "grand_canyon_south"
+  | "grand_canyon_national_park"
   | "bryce_canyon_zion"
   | "antelope_canyon"
   | "valley_of_fire"

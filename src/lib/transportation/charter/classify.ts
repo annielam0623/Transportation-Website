@@ -40,6 +40,7 @@ export function classifyCharterTrip(
   if (
     input.serviceType === "grand_canyon_west_rim" ||
     input.serviceType === "grand_canyon_national_park" ||
+    input.serviceType === "grand_canyon_south"||
     input.serviceType === "bryce_canyon_zion" ||
     input.serviceType === "antelope_canyon"
   ) {
